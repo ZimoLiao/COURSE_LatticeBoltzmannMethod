@@ -3,6 +3,7 @@
 
 class LatticeFunction
 {
+
 	/* parameters */
 
 	// velocity set
@@ -13,6 +14,8 @@ class LatticeFunction
 		1. / 9., 1. / 9., 1. / 9., 1. / 9.,
 		1. / 36., 1. / 36., 1. / 36., 1. / 36.
 	};
+
+public: // TODO: 斟酌参数的可见性
 
 	// collision operator
 	// SRT
@@ -43,9 +46,6 @@ class LatticeFunction
 		{	1. / 9,	1. / 18,	1. / 36,	-1. / 6,	-1. / 12,	-1. / 6,	-1. / 12,	0,			1. / 4	},
 		{	1. / 9,	1. / 18,	1. / 36,	1. / 6,		1. / 12,	-1. / 6,	-1. / 12,	0,			-1. / 4	},
 	};
-
-public:
-
 
 	/* functions */
 	void CalculateEquilibrium(double* feq, const double rho, const double u, const double v);

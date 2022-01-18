@@ -230,6 +230,12 @@ void LatticeMoment::Update(LatticePopulation& lp)
 				+ (v - data_[mind + 2]) * (v - data_[mind + 2]));
 		}
 	}
+
+#ifdef _DEBUG
+
+	cout << "Moment update difference: " << diff << endl;
+
+#endif // _DEBUG
 }
 
 void LatticeMoment::OutputAscii()

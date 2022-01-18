@@ -13,6 +13,11 @@ protected:
 
 	LatticeFunction func;
 
+	/* MPI connection */
+	int rank = 0;
+	//	0	1	2	3	4	5	6	7	8
+	int rank_conn[9] = { rank,rank,rank,rank,rank,rank,rank,rank,rank }; // default to periodic
+
 	/* data */
 	double* data_;
 
@@ -33,6 +38,8 @@ public:
 	void Init(const LatticePopulation& lp);
 	void Init(LatticeMoment& lm);
 
+	void InitConnection(); // TODO: initialize the connection information
+
 	/* operators */
 	// index	0:n-1
 	double& operator()(int i, int j, int p);
@@ -40,7 +47,10 @@ public:
 	void operator=(const LatticePopulation& lp);
 
 	/* functions */
-
+	void Stream();
+	void CollideSrt(LatticeMoment& lm);
+	void CollideMrt(LatticeMoment& lm);
+	void UpdateGhost();
 };
 
 #endif // !LATTICEPOPULATION_H_

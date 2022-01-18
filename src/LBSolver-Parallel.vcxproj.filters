@@ -21,9 +21,6 @@
     <ClInclude Include="LatticeMoment.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="LatticeParameter.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="LatticeFunction.h">
       <Filter>头文件</Filter>
     </ClInclude>
