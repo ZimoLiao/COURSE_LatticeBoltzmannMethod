@@ -1,0 +1,205 @@
+#include "LatticeMoment.h"
+
+#ifdef _DEBUG
+
+#include<iostream>
+using namespace std;
+
+#endif // _DEBUG
+
+
+LatticeMoment::LatticeMoment()
+{
+	ni_ = 1;
+	nj_ = 1;
+
+	sizeij_ = 1;
+	size_ = 1;
+	data_ = new double[1];
+	data_[0] = 0.0;
+}
+
+LatticeMoment::LatticeMoment(int ni, int nj)
+{
+	ni_ = ni;
+	nj_ = nj;
+
+	sizeij_ = ni_ * nj_;
+	size_ = sizeij_ * 3;
+	data_ = new double[size_];
+	for (int i = 0; i != sizeij_; i++) {
+
+#ifdef _DEBUG
+		if (3 * i < 0 || 3 * i + 2 >= size_) {
+			cout << "out_of_range\n";
+			return;
+		}
+#endif // _DEBUG
+
+		data_[3 * i] = 1.0;
+		data_[3 * i + 1] = 0.0;
+		data_[3 * i + 2] = 0.0;
+	}
+}
+
+LatticeMoment::LatticeMoment(int ni, int nj, const double d[3])
+{
+	ni_ = ni;
+	nj_ = nj;
+
+	sizeij_ = ni_ * nj_;
+	size_ = sizeij_ * 3;
+	data_ = new double[size_];
+	for (int i = 0; i != size_; i++) { data_[i] = d[i % 3]; }
+}
+
+LatticeMoment::LatticeMoment(const LatticeMoment& lm)
+{
+	ni_ = lm.ni_;
+	nj_ = lm.nj_;
+
+	sizeij_ = lm.sizeij_;
+	size_ = lm.size_;
+	data_ = new double[size_];
+	for (int i = 0; i != size_; i++) { data_[i] = lm.data_[i]; }
+}
+
+LatticeMoment::~LatticeMoment()
+{
+	delete[] data_;
+}
+
+void LatticeMoment::Init(int ni, int nj)
+{
+	ni_ = ni;
+	nj_ = nj;
+
+	sizeij_ = ni_ * nj_;
+	size_ = sizeij_ * 3;
+	data_ = new double[size_];
+	for (int i = 0; i != sizeij_; i++) {
+
+#ifdef _DEBUG
+		if (3 * i < 0 || 3 * i + 2 >= size_) {
+			cout << "out_of_range\n";
+			return;
+		}
+#endif // _DEBUG
+
+		data_[3 * i] = 1.0;
+		data_[3 * i + 1] = 0.0;
+		data_[3 * i + 2] = 0.0;
+	}
+}
+
+void LatticeMoment::Init(int ni, int nj, const double d[3])
+{
+	ni_ = ni;
+	nj_ = nj;
+
+	sizeij_ = ni_ * nj_;
+	size_ = sizeij_ * 3;
+	data_ = new double[size_];
+	for (int i = 0; i != size_; i++) { data_[i] = d[i % 3]; }
+}
+
+void LatticeMoment::Init(const LatticeMoment& lm)
+{
+	ni_ = lm.ni_;
+	nj_ = lm.nj_;
+
+	sizeij_ = lm.sizeij_;
+	size_ = lm.size_;
+	data_ = new double[size_];
+	for (int i = 0; i != size_; i++) { data_[i] = lm.data_[i]; }
+}
+
+double& LatticeMoment::operator()(int i, int j, int m)
+{
+
+#ifdef _DEBUG
+
+	if (i < 0 || j < 0 || m < 0 || i >= ni_ || j >= nj_ || m >= 3) {
+		cout << "out_of_range\n";
+		return data_[0];
+	}
+
+#endif // _DEBUG
+
+	return data_[3 * (nj_ * i + j) + m];
+}
+
+void LatticeMoment::operator=(const LatticeMoment& lm)
+{
+
+#ifdef _DEBUG
+
+	if (size_ != lm.size_ || sizeij_ != lm.sizeij_) {
+		cout << "size_mismatch\n";
+		return;
+	}
+
+#endif // _DEBUG
+
+	for (int i = 0; i != size_; i++) { data_[i] = lm.data_[i]; }
+}
+
+void LatticeMoment::operator+=(const LatticeMoment& lm)
+{
+
+#ifdef _DEBUG
+
+	if (size_ != lm.size_ || sizeij_ != lm.sizeij_) {
+		cout << "size_mismatch\n";
+		return;
+	}
+
+#endif // _DEBUG
+
+	for (int i = 0; i != size_; i++) { data_[i] += lm.data_[i]; }
+}
+
+void LatticeMoment::operator-=(const LatticeMoment& lm)
+{
+
+#ifdef _DEBUG
+
+	if (size_ != lm.size_ || sizeij_ != lm.sizeij_) {
+		cout << "size_mismatch\n";
+		return;
+	}
+
+#endif // _DEBUG
+
+	for (int i = 0; i != size_; i++) { data_[i] -= lm.data_[i]; }
+}
+
+void LatticeMoment::operator*=(const LatticeMoment& lm)
+{
+
+#ifdef _DEBUG
+
+	if (size_ != lm.size_ || sizeij_ != lm.sizeij_) {
+		cout << "size_mismatch\n";
+		return;
+	}
+
+#endif // _DEBUG
+
+	for (int i = 0; i != size_; i++) { data_[i] *= lm.data_[i]; }
+}
+
+void LatticeMoment::operator/=(const LatticeMoment& lm)
+{
+
+#ifdef _DEBUG
+
+	if (size_ != lm.size_ || sizeij_ != lm.sizeij_) {
+		cout << "size_mismatch\n";
+		return;
+	}
+
+#endif // _DEBUG
+
+	for (int i = 0; i != size_; i++) { data_[i] /= lm.data_[i]; }
+}

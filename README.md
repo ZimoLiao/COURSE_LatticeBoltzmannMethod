@@ -9,4 +9,4 @@
 * Lattice Boltzmann solver
 * Velocity set: D2Q9
 * Collision operators: SRT (BGK model), MRT (with Gram-Schmidt orthogonal moment)
-* CPU Parallel using MPI
+* CPU parallel computing (MPI)
