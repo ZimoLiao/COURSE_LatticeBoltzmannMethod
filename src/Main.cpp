@@ -6,7 +6,7 @@ int main()
 {
 
 	LatticePopulation lp;
-	LatticeMoment lm(100, 100);
+	LatticeMoment lm(10, 10);
 
 	lm.SetVelocityShear(0.1);
 	lm.OutputAscii("output_0.dat");
@@ -15,7 +15,7 @@ int main()
 
 	int step = 0;
 	string fname;
-	for (int i = 0; i != 1000; i++) {
+	for (int i = 0; i != 200; i++) {
 
 		step++;
 

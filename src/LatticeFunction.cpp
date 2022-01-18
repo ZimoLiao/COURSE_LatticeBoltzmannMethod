@@ -3,7 +3,7 @@
 #include<math.h>
 #include<iostream>
 
-void LatticeFunction::CalculateEquilibrium(double* feq, const double rho, const double u, const double v)
+void LatticeFunction::CalculateFeq(double* feq, const double rho, const double u, const double v)
 {
 	double udotc, expr = 1.0 - 1.5 * (u * u + v * v);
 	feq[0] = rho * expr * w[0];
@@ -13,7 +13,7 @@ void LatticeFunction::CalculateEquilibrium(double* feq, const double rho, const 
 	}
 }
 
-void LatticeFunction::CalculateEquilibrium(double* feq, const double* m)
+void LatticeFunction::CalculateFeq(double* feq, const double* m)
 {
 
 #ifdef _DEBUG
@@ -29,6 +29,26 @@ void LatticeFunction::CalculateEquilibrium(double* feq, const double* m)
 		udotc = m[1] * cx[a] + m[2] * cy[a];
 		feq[a] = m[0] * (expr + udotc * (3.0 + 4.5 * udotc)) * w[a];
 	}
+}
+
+void LatticeFunction::CalculateFstar(double * fstar, const double * m)
+{
+
+#ifdef _DEBUG
+	if (fabs(m[0] - 1.0) > 1.0) {
+		std::cout << "out_of_range\n";
+		return;
+	}
+#endif // _DEBUG
+
+	double rho = m[0], u = m[1], v = m[2];
+	double meq[9] = { rho, rho*(1. - 3.*(u*u + v * v)),
+		rho*(9.*u*u*v*v - 3.*(u*u + v * v) + 1.),
+		rho*u,rho*u*(3.*u - 1.),rho*v,rho*v*(3.*v - 1.),
+		rho*(u*u - v * v),rho*u*v
+	};
+
+	double mstar[9];
 }
 
 void LatticeFunction::CalculateMoment(double* m, const double* f)

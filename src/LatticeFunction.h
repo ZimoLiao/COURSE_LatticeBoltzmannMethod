@@ -24,6 +24,8 @@ public: // TODO: 斟酌参数的可见性
 	// MRT (with Gram-Schmidt orthogonal moment)
 	// TODO: 检查是否有误
 	double omega1 = 1.0, omega2 = 1.0, omega3 = 1.0, omega4 = 1.0;
+	double omega1c = 1.0 - omega1, omega2c = 1.0 - omega2, \
+		omega3c = 1.0 - omega3, omega4c = 1.0 - omega4;
 	const double M[9][9] = {
 		{	1,	1,	1,	1,	1,	1,	1,	1,	1	},
 		{	-4,	-1,	-1,	-1,	-1,	2,	2,	2,	2	},
@@ -48,8 +50,9 @@ public: // TODO: 斟酌参数的可见性
 	};
 
 	/* functions */
-	void CalculateEquilibrium(double* feq, const double rho, const double u, const double v);
-	void CalculateEquilibrium(double* feq, const double* m);
+	void CalculateFeq(double* feq, const double rho, const double u, const double v);
+	void CalculateFeq(double* feq, const double* m);
+	void CalculateFstar(double* fstar, const double* m); // MRT
 	void CalculateMoment(double* m, const double* f);
 };
 

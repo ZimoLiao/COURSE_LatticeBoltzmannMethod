@@ -74,7 +74,7 @@ LatticePopulation::LatticePopulation(int ni, int nj, double rho, double u, doubl
 
 	// calculate equilibrium population
 	double feq[9];
-	func.CalculateEquilibrium(feq, rho, u, v);
+	func.CalculateFeq(feq, rho, u, v);
 
 	// equilibrium populaiton with uniform specific velocity
 	for (int i = 0; i != size_; i++) {
@@ -112,7 +112,7 @@ LatticePopulation::LatticePopulation(LatticeMoment& lm)
 		for (int j = 0; j != nj_; j++) {
 			ind = 9 * (sizej_ * (i + 1) + j + 1);
 
-			func.CalculateEquilibrium(feq, &lm(i, j, 0));
+			func.CalculateFeq(feq, &lm(i, j, 0));
 
 			data_[ind] = feq[0];
 			data_[ind + 1] = feq[1];
@@ -178,7 +178,7 @@ void LatticePopulation::Init(int ni, int nj, double rho, double u, double v)
 
 	// calculate equilibrium population
 	double feq[9];
-	func.CalculateEquilibrium(feq, rho, u, v);
+	func.CalculateFeq(feq, rho, u, v);
 
 	// equilibrium populaiton with uniform specific velocity
 	for (int i = 0; i != size_; i++) {
@@ -216,7 +216,7 @@ void LatticePopulation::Init(LatticeMoment& lm)
 		for (int j = 0; j != nj_; j++) {
 			ind = 9 * (sizej_ * (i + 1) + j + 1);
 
-			func.CalculateEquilibrium(feq, &lm(i, j, 0));
+			func.CalculateFeq(feq, &lm(i, j, 0));
 
 			data_[ind] = feq[0];
 			data_[ind + 1] = feq[1];
@@ -369,7 +369,7 @@ void LatticePopulation::CollideSrt(LatticeMoment& lm)
 		for (int j = 0; j != nj_; j++) {
 			ind = 9 * (sizej_ * (i + 1) + j + 1);
 
-			func.CalculateEquilibrium(feq, &lm(i, j, 0));
+			func.CalculateFeq(feq, &lm(i, j, 0));
 
 			data_[ind] += feq[0] * omega;
 			data_[ind + 1] += feq[1] * omega;
@@ -396,6 +396,8 @@ void LatticePopulation::CollideMrt(LatticeMoment& lm)
 	}
 
 #endif // _DEBUG
+
+
 
 }
 
