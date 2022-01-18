@@ -1,8 +1,5 @@
 #include "LatticeMoment.h"
 
-#include<iostream>
-using namespace std;
-
 LatticeMoment::LatticeMoment()
 {
 	ni_ = 1;
@@ -107,6 +104,28 @@ void LatticeMoment::Init(const LatticeMoment& lm)
 	size_ = lm.size_;
 	data_ = new double[size_];
 	for (int i = 0; i != size_; i++) { data_[i] = lm.data_[i]; }
+}
+
+void LatticeMoment::SetVelocityShear(double u)
+{
+	double nmode = 2.0;
+
+	for (int i = 0; i != ni_; i++) {
+		for (int j = 0; j != nj_; j++) {
+			if (j > nj_ / 2 - 1) {
+				data_[3 * (nj_ * i + j) + 1] = u;
+			}
+			else {
+				data_[3 * (nj_ * i + j) + 1] = -u;
+			}
+
+			// disturbance
+			if (j > nj_ / 3 && j < nj_ * 2 / 3) {
+				data_[3 * (nj_ * i + j) + 2] = 0.01 * sin(6.283185307 * (nmode * i / ni_))\
+					* cos(3.141592654 * (j - nj_ / 2. + 1.) / (nj_ / 3.));
+			}
+		}
+	}
 }
 
 double& LatticeMoment::operator()(int i, int j, int m)
@@ -241,8 +260,39 @@ void LatticeMoment::Update(LatticePopulation& lp)
 void LatticeMoment::OutputAscii()
 {
 	ofstream fout;
-	string file_name = "output.dat";
-	fout.open(file_name);
+	string fname = "output.dat";
+	fout.open(fname);
+
+	// header
+	fout << "TITLE     = \" moment \"" << endl;
+	fout << "FILETYPE  = FULL" << endl;
+	fout << "VARIABLES = \"x\", \"y\", \"rho\", \"u\", \"v\"" << endl;
+	fout << "ZONE    F = point" << endl;
+	fout << "        I = " << ni_ << endl;
+	fout << "        J = " << nj_ << endl;
+
+	// flow variables (moments)
+	int mind;
+	for (int j = 0; j != nj_; j++) {
+		for (int i = 0; i != ni_; i++) {
+			mind = 3 * (i * nj_ + j);
+
+			fout << left << setw(8) << i \
+				<< ' ' << left << setw(8) << j \
+				<< ' ' << scientific << setprecision(12) << data_[mind] \
+				<< ' ' << scientific << setprecision(12) << data_[mind + 1] \
+				<< ' ' << scientific << setprecision(12) << data_[mind + 2] \
+				<< endl;
+		}
+	}
+
+	fout.close();
+}
+
+void LatticeMoment::OutputAscii(string fname)
+{
+	ofstream fout;
+	fout.open(fname);
 
 	// header
 	fout << "TITLE     = \" moment \"" << endl;

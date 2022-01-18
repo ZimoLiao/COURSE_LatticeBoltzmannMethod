@@ -19,7 +19,7 @@ public: // TODO: 斟酌参数的可见性
 
 	// collision operator
 	// SRT
-	double tau = 0.8, omega = 1.0 / tau, omegac = 1.0 - omega;
+	double tau = 0.6, omega = 1.0 / tau, omegac = 1.0 - omega;
 
 	// MRT (with Gram-Schmidt orthogonal moment)
 	// TODO: 检查是否有误

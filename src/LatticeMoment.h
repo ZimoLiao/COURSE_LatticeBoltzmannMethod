@@ -4,6 +4,10 @@
 #include<fstream>
 #include<iomanip>
 #include<string>
+#include<iostream>
+#include<math.h>
+
+using namespace std;
 
 #include"LatticeFunction.h"
 #include"LatticePopulation.h"
@@ -39,6 +43,9 @@ public:
 	void Init(int ni, int nj, const double d[3]);
 	void Init(const LatticeMoment& lm);
 
+	// TODO: test cases
+	void SetVelocityShear(double u);
+
 	/* operators */
 	// index	0:n-1
 	double& operator()(int i, int j, int m);
@@ -54,6 +61,7 @@ public:
 
 	/* I/O */
 	void OutputAscii();
+	void OutputAscii(string fname);
 };
 
 #endif // !LATTICEMOMENT_H_

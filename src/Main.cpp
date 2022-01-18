@@ -6,19 +6,28 @@ int main()
 {
 
 	LatticePopulation lp;
-	double d[3] = { 1.0,0.2,-0.05 };
-	LatticeMoment lm(20, 20, d);
+	LatticeMoment lm(100, 100);
 
-	lm.OutputAscii();
+	lm.SetVelocityShear(0.1);
+	lm.OutputAscii("output_0.dat");
 
 	lp.Init(lm);
 
-	for (int i = 0; i != 20; i++) {
+	int step = 0;
+	string fname;
+	for (int i = 0; i != 1000; i++) {
+
+		step++;
+
 		lp.CollideSrt(lm);
 		lp.UpdateGhost();
 		lp.Stream();
 
 		lm.Update(lp);
+
+		if (step % 50 == 0) {
+			fname = "output_" + to_string(step) + ".dat";
+			lm.OutputAscii(fname);
+		}
 	}
-	lm.OutputAscii();
 }
