@@ -1,6 +1,13 @@
 #ifndef LATTICEMOMENT_H_
 #define LATTICEMOMENT_H_
 
+#include<fstream>
+#include<iomanip>
+#include<string>
+
+#include"LatticeFunction.h"
+#include"LatticePopulation.h"
+
 // Moments for D2Q9
 //	1	rho (density)
 //	2	u
@@ -11,8 +18,11 @@ protected:
 	/* parameters */
 	int ni_, nj_, sizeij_, size_;
 
+	LatticeFunction func;
+
 	/* data */
 	double* data_;
+	double diff = 1.0;
 
 public:
 	friend class LatticePopulation;
@@ -38,6 +48,12 @@ public:
 	void operator-=(const LatticeMoment& lm);
 	void operator*=(const LatticeMoment& lm);
 	void operator/=(const LatticeMoment& lm);
+
+	/* functions */
+	void Update(LatticePopulation& lp);
+
+	/* I/O */
+	void OutputAscii();
 };
 
 #endif // !LATTICEMOMENT_H_

@@ -1,12 +1,7 @@
 #include "LatticeMoment.h"
 
-#ifdef _DEBUG
-
 #include<iostream>
 using namespace std;
-
-#endif // _DEBUG
-
 
 LatticeMoment::LatticeMoment()
 {
@@ -202,4 +197,69 @@ void LatticeMoment::operator/=(const LatticeMoment& lm)
 #endif // _DEBUG
 
 	for (int i = 0; i != size_; i++) { data_[i] /= lm.data_[i]; }
+}
+
+void LatticeMoment::Update(LatticePopulation& lp)
+{
+
+#ifdef _DEBUG
+
+	if (ni_ != lp.ni_ || nj_ != lp.nj_) {
+		cout << "size_mismatch\n";
+		return;
+	}
+
+#endif // _DEBUG
+
+	diff = 0.0;
+
+	int pind, mind;
+	double u, v;
+	for (int i = 0; i != ni_; i++) {
+		for (int j = 0; j != nj_; j++) {
+			pind = 9 * (lp.sizej_ * (i + 1) + j + 1);
+			mind = 3 * (nj_ * i + j);
+
+			u = data_[mind + 1];
+			v = data_[mind + 2];
+
+			func.CalculateMoment(&data_[mind], &lp.data_[pind]);
+
+			// TODO: more options for difference definition
+			diff += sqrt((u - data_[mind + 1]) * (u - data_[mind + 1]) \
+				+ (v - data_[mind + 2]) * (v - data_[mind + 2]));
+		}
+	}
+}
+
+void LatticeMoment::OutputAscii()
+{
+	ofstream fout;
+	string file_name = "output.dat";
+	fout.open(file_name);
+
+	// header
+	fout << "TITLE     = \" moment \"" << endl;
+	fout << "FILETYPE  = FULL" << endl;
+	fout << "VARIABLES = \"x\", \"y\", \"rho\", \"u\", \"v\"" << endl;
+	fout << "ZONE    F = point" << endl;
+	fout << "        I = " << ni_ << endl;
+	fout << "        J = " << nj_ << endl;
+
+	// flow variables (moments)
+	int mind;
+	for (int j = 0; j != nj_; j++) {
+		for (int i = 0; i != ni_; i++) {
+			mind = 3 * (i * nj_ + j);
+
+			fout << left << setw(8) << i \
+				<< ' ' << left << setw(8) << j \
+				<< ' ' << scientific << setprecision(12) << data_[mind] \
+				<< ' ' << scientific << setprecision(12) << data_[mind + 1] \
+				<< ' ' << scientific << setprecision(12) << data_[mind + 2] \
+				<< endl;
+		}
+	}
+
+	fout.close();
 }

@@ -1,12 +1,7 @@
 ﻿#include "LatticePopulation.h"
 
-#ifdef _DEBUG
-
 #include<iostream>
 using namespace std;
-
-#endif // _DEBUG
-
 
 LatticePopulation::LatticePopulation()
 {

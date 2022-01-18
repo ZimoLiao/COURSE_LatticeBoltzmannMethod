@@ -6,15 +6,12 @@ int main()
 {
 
 	LatticePopulation lp;
-	
-	LatticeMoment lm(10, 10);
+	double d[3] = { 1.0,0.2,-0.1 };
+	LatticeMoment lm(10, 10, d);
 
-	lm.Init(2, 10);
+	lm.OutputAscii();
 
 	lp.Init(lm);
-
-	LatticePopulation lp2;
-
-	lp2.Init(lp);
-
+	lm.Update(lp);
+	lm.OutputAscii();
 }

@@ -48,8 +48,9 @@ public:
 
 
 	/* functions */
-	void CalculateEquilibrium(double* feq, double rho, double u, double v);
-	void CalculateEquilibrium(double* feq, double* moment);
+	void CalculateEquilibrium(double* feq, const double rho, const double u, const double v);
+	void CalculateEquilibrium(double* feq, const double* m);
+	void CalculateMoment(double* m, const double* f);
 };
 
 

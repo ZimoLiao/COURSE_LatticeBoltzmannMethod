@@ -17,6 +17,8 @@ protected:
 	double* data_;
 
 public:
+	friend class LatticeMoment;
+
 	/* constructors & destructor */
 	LatticePopulation();
 	LatticePopulation(int ni, int nj);
