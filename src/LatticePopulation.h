@@ -15,8 +15,8 @@ protected:
 
 	/* MPI connection */
 	int rank = 0;
-	//	0	1	2	3	4	5	6	7	8
-	int rank_conn[9] = { rank,rank,rank,rank,rank,rank,rank,rank,rank }; // default to periodic
+	//int rank_conn[9] = { rank,rank,rank,rank,rank,rank,rank,rank,rank }; // default to periodic
+	int rank_conn[9] = { rank,rank,-1,rank,-1,-1,-1,-1,-1 }; // default to periodic with extrapolation
 
 	/* data */
 	double* data_;

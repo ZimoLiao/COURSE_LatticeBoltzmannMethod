@@ -19,13 +19,14 @@ public: // TODO: 斟酌参数的可见性
 
 	// collision operator
 	// SRT
-	double tau = 0.6, omega = 1.0 / tau, omegac = 1.0 - omega;
+	double tau = 0.54, somega = 1.0 / tau, somegac = 1.0 - somega;
 
 	// MRT (with Gram-Schmidt orthogonal moment)
 	// TODO: 检查是否有误
-	double omega1 = 1.0, omega2 = 1.0, omega3 = 1.0, omega4 = 1.0;
-	double omega1c = 1.0 - omega1, omega2c = 1.0 - omega2, \
-		omega3c = 1.0 - omega3, omega4c = 1.0 - omega4;
+	double momega1 = 0.03, momega2 = 1.0, momega3 = 1.0, momega4 = 1.97;
+	double momega[9] = { 0., momega1, momega2, 0., momega3, 0., momega3, momega4, momega4 };
+	double momegac[9] = { 1., 1. - momega1, 1. - momega2, 1., 1. - momega3, \
+		1., 1. - momega3, 1. - momega4, 1. - momega4 };
 	const double M[9][9] = {
 		{	1,	1,	1,	1,	1,	1,	1,	1,	1	},
 		{	-4,	-1,	-1,	-1,	-1,	2,	2,	2,	2	},
@@ -52,7 +53,7 @@ public: // TODO: 斟酌参数的可见性
 	/* functions */
 	void CalculateFeq(double* feq, const double rho, const double u, const double v);
 	void CalculateFeq(double* feq, const double* m);
-	void CalculateFstar(double* fstar, const double* m); // MRT
+	void CalculateFstar(double* f, const double* m); // MRT
 	void CalculateMoment(double* m, const double* f);
 };
 

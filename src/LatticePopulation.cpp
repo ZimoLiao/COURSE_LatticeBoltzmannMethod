@@ -360,7 +360,8 @@ void LatticePopulation::CollideSrt(LatticeMoment& lm)
 
 #endif // _DEBUG
 
-	double omega = func.omega, omegac = func.omegac;
+	// TODO: 把乘更新都内置到func里！
+	double omega = func.somega, omegac = func.somegac;
 	for (int i = 0; i != size_; i++) { data_[i] *= omegac; }
 
 	double feq[9];
@@ -397,7 +398,14 @@ void LatticePopulation::CollideMrt(LatticeMoment& lm)
 
 #endif // _DEBUG
 
+	int ind;
+	for (int i = 0; i != ni_; i++) {
+		for (int j = 0; j != nj_; j++) {
+			ind = 9 * (sizej_ * (i + 1) + j + 1);
 
+			func.CalculateFstar(&data_[ind], &lm(i, j, 0));
+		}
+	}
 
 }
 
@@ -418,6 +426,18 @@ void LatticePopulation::UpdateGhost()
 			data_[ig0 + i] = data_[i0 + i];
 		}
 	}
+	else if (rank_conn[1] < 0) { // extrapolation boundary
+		switch (abs(rank_conn[1]))
+		{
+		default:
+			ig0 = 9 * (sizej_ * (sizei_ - 1) + 1);
+			i0 = 9 * (sizej_ * ni_ + 1);
+			for (int i = 0; i != 9 * nj_; i++) {
+				data_[ig0 + i] = data_[i0 + i];
+			}
+			break;
+		}
+	}
 	if (rank_conn[2] == rank) { // TODO: Optimization!
 		jg0 = sizej_ - 1;
 		j0 = 1;
@@ -429,12 +449,41 @@ void LatticePopulation::UpdateGhost()
 			}
 		}
 	}
+	else if (rank_conn[2] < 0) {
+		switch (abs(rank_conn[2]))
+		{
+		default:
+			jg0 = sizej_ - 1;
+			j0 = nj_;
+			for (int i = 1; i <= ni_; i++) {
+				ig0 = 9 * (sizej_ * i + jg0);
+				i0 = 9 * (sizej_ * i + j0);
+				for (int p = 0; p != 9; p++) {
+					data_[ig0 + p] = data_[i0 + p];
+				}
+			}
+			break;
+		}
+	}
 	if (rank_conn[3] == rank) {
 		ig0 = 9;
 		i0 = 9 * (sizej_ * ni_ + 1);
 		for (int i = 0; i != 9 * nj_; i++) {
 			data_[ig0 + i] = data_[i0 + i];
 		}
+	}
+	else if (rank_conn[3] < 0) {
+		switch (abs(rank_conn[3]))
+		{
+		default:
+			ig0 = 9;
+			i0 = 9 * (sizej_ + 1);
+			for (int i = 0; i != 9 * nj_; i++) {
+				data_[ig0 + i] = data_[i0 + i];
+			}
+			break;
+		}
+
 	}
 	if (rank_conn[4] == rank) { // TODO: Optimization!
 		jg0 = 0;
@@ -447,6 +496,23 @@ void LatticePopulation::UpdateGhost()
 			}
 		}
 	}
+	else if (rank_conn[4] < 0) {
+		switch (abs(rank_conn[4]))
+		{
+		default:
+			jg0 = 0;
+			j0 = 1;
+			for (int i = 1; i <= ni_; i++) {
+				ig0 = 9 * (sizej_ * i + jg0);
+				i0 = 9 * (sizej_ * i + j0);
+				for (int p = 0; p != 9; p++) {
+					data_[ig0 + p] = data_[i0 + p];
+				}
+			}
+			break;
+		}
+
+	}
 
 	// corners
 	if (rank_conn[5] == rank) {
@@ -454,9 +520,29 @@ void LatticePopulation::UpdateGhost()
 			data_[size_ - 9 + i] = data_[9 * (sizej_ + 1) + i];
 		}
 	}
+	else if (rank_conn[5] < 0) {
+		switch (abs(rank_conn[5]))
+		{
+		default:
+			for (int i = 0; i != 9; i++) {
+				data_[size_ - 9 + i] = data_[9 * (sizej_ * ni_ + nj_) + i];
+			}
+			break;
+		}
+	}
 	if (rank_conn[6] == rank) {
 		for (int i = 0; i != 9; i++) {
 			data_[9 * (sizej_ - 1) + i] = data_[9 * (sizej_ * ni_ + 1) + i];
+		}
+	}
+	else if (rank_conn[6] < 0) {
+		switch (abs(rank_conn[6]))
+		{
+		default:
+			for (int i = 0; i != 9; i++) {
+				data_[9 * (sizej_ - 1) + i] = data_[9 * (sizej_ + nj_) + i];
+			}
+			break;
 		}
 	}
 	if (rank_conn[7] == rank) {
@@ -464,9 +550,29 @@ void LatticePopulation::UpdateGhost()
 			data_[i] = data_[9 * (sizej_ * ni_ + nj_) + i];
 		}
 	}
+	else if (rank_conn[7] < 0) {
+		switch (abs(rank_conn[7]))
+		{
+		default:
+			for (int i = 0; i != 9; i++) {
+				data_[i] = data_[9 * (sizej_ + 1) + i];
+			}
+			break;
+		}
+	}
 	if (rank_conn[8] == rank) {
 		for (int i = 0; i != 9; i++) {
 			data_[9 * (sizej_ * (sizei_ - 1)) + i] = data_[9 * (sizej_ + nj_) + i];
+		}
+	}
+	else if (rank_conn[8] < 0) {
+		switch (abs(rank_conn[8]))
+		{
+		default:
+			for (int i = 0; i != 9; i++) {
+				data_[9 * (sizej_ * (sizei_ - 1)) + i] = data_[9 * (sizej_ * ni_ + 1) + i];
+			}
+			break;
 		}
 	}
 }

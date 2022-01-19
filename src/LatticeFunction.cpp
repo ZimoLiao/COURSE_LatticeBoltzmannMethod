@@ -31,24 +31,67 @@ void LatticeFunction::CalculateFeq(double* feq, const double* m)
 	}
 }
 
-void LatticeFunction::CalculateFstar(double * fstar, const double * m)
+// TODO: need optimization!!!
+void LatticeFunction::CalculateFstar(double* f, const double* moment)
 {
 
 #ifdef _DEBUG
-	if (fabs(m[0] - 1.0) > 1.0) {
+	if (fabs(moment[0] - 1.0) > 1.0) {
 		std::cout << "out_of_range\n";
 		return;
 	}
 #endif // _DEBUG
 
-	double rho = m[0], u = m[1], v = m[2];
-	double meq[9] = { rho, rho*(1. - 3.*(u*u + v * v)),
-		rho*(9.*u*u*v*v - 3.*(u*u + v * v) + 1.),
-		rho*u,rho*u*(3.*u - 1.),rho*v,rho*v*(3.*v - 1.),
-		rho*(u*u - v * v),rho*u*v
+	double rho = moment[0], u = moment[1], v = moment[2];
+	double m[9] = { 0.0 };
+
+	// TODO: need optimization!!!
+	for (int i = 0; i != 9; i++) {
+		for (int j = 0; j != 9; j++) {
+			m[i] += M[i][j] * f[j];
+		}
+	}
+
+	/*
+	double meq[9] = {
+			rho,
+			rho * (1. - 3. * (u * u + v * v)),
+			rho * (9. * u * u * v * v - 3. * (u * u + v * v) + 1.),
+			rho * u,
+			rho * u * (3. * u * u - 1.),
+			rho * v,
+			rho * v * (3. * v * v - 1.),
+			rho * (u * u - v * v),
+			rho * u * v
+	};
+	*/
+
+	// TODO: 改变尝试一下 https://zhuanlan.zhihu.com/p/457061066
+	double jx = rho * u, jy = rho * v;
+	double meq[9] = {
+			rho,
+			rho * (-2. / 3. + 3. * u * u + 3. * v * v),
+			rho * (1. / 3. - 3. * u * u - 3. * v * v) / 3.,
+			jx,
+			-jx / 3.,
+			jy,
+			-jy / 3.,
+			rho * (u * u - v * v),
+			rho * u * v
 	};
 
-	double mstar[9];
+	// TODO: need optimization!!!
+	for (int i = 0; i != 9; i++) { // mstar
+		m[i] *= momegac[i];
+		m[i] += momega[i] * meq[i];
+	}
+
+	for (int i = 0; i != 9; i++) {
+		f[i] = 0.0;
+		for (int j = 0; j != 9; j++) {
+			f[i] += Minv[i][j] * m[j];
+		}
+	}
 }
 
 void LatticeFunction::CalculateMoment(double* m, const double* f)
