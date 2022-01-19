@@ -24,6 +24,9 @@
     <ClInclude Include="LatticeFunction.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="LatticeSolver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LatticePopulation.cpp">
@@ -38,8 +41,8 @@
     <ClCompile Include="LatticeFunction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClCompile Include="LatticeSolver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

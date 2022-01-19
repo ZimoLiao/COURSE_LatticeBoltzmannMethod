@@ -15,8 +15,7 @@ protected:
 
 	/* MPI connection */
 	int rank = 0;
-	//int rank_conn[9] = { rank,rank,rank,rank,rank,rank,rank,rank,rank }; // default to periodic
-	int rank_conn[9] = { rank,rank,-1,rank,-1,-1,-1,-1,-1 }; // default to periodic with extrapolation
+	int rank_conn[9] = { rank,rank,rank,rank,rank,rank,rank,rank,rank }; // default to periodic
 
 	/* data */
 	double* data_;
@@ -38,7 +37,9 @@ public:
 	void Init(const LatticePopulation& lp);
 	void Init(LatticeMoment& lm);
 
-	void InitConnection(); // TODO: initialize the connection information
+	void InitParameter(double tau, double momega1, double momega2, double momega3, double momega4);
+
+	void InitConnection(int rank, int Dx, int Dy, int B[9]); // TODO: initialize the connection information
 
 	/* operators */
 	// index	0:n-1

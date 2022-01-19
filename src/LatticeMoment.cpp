@@ -106,6 +106,11 @@ void LatticeMoment::Init(const LatticeMoment& lm)
 	for (int i = 0; i != size_; i++) { data_[i] = lm.data_[i]; }
 }
 
+void LatticeMoment::InitParameter(double tau, double momega1, double momega2, double momega3, double momega4)
+{
+	func.Init(tau, momega1, momega2, momega3, momega4);
+}
+
 void LatticeMoment::SetVelocityShear(double u)
 {
 	double nmode = 4.0;

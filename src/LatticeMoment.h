@@ -43,6 +43,8 @@ public:
 	void Init(int ni, int nj, const double d[3]);
 	void Init(const LatticeMoment& lm);
 
+	void InitParameter(double tau, double momega1, double momega2, double momega3, double momega4);
+
 	// TODO: test cases
 	void SetVelocityShear(double u);
 

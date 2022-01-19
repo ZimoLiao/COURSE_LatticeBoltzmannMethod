@@ -55,6 +55,8 @@ public: // TODO: 斟酌参数的可见性
 	void CalculateFeq(double* feq, const double* m);
 	void CalculateFstar(double* f, const double* m); // MRT
 	void CalculateMoment(double* m, const double* f);
+
+	void Init(double tau, double momega1, double momega2, double momega3, double momega4);
 };
 
 

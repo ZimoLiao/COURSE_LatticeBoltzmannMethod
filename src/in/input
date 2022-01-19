@@ -1,0 +1,21 @@
+## INPUT FILE FOR LBSOLVER-PARALLEL
+# case name
+test
+
+## GEOMETRY
+# grid
+Nx      Ny
+64      64
+# domain decomposition
+Dx      Dy
+2       2
+# boundary types
+1   2   3   4   5   6   7   8
+0   -1  0   -1  -1  -1  -1  -1
+
+## MODEL (D2Q9)
+# collision operators and corresponding relaxation times
+[SRT]   tau
+1       0.6
+[MRT]   omega_e     omega_ep    omega_q     omega_nu   
+0       0.2         1.0         1.0         1.8

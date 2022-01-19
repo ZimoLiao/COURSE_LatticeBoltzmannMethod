@@ -231,6 +231,62 @@ void LatticePopulation::Init(LatticeMoment& lm)
 	}
 }
 
+void LatticePopulation::InitParameter(double tau, double momega1, double momega2, double momega3, double momega4)
+{
+	func.Init(tau, momega1, momega2, momega3, momega4);
+}
+
+void LatticePopulation::InitConnection(int rank, int Dx, int Dy, int B[9])
+{
+	this->rank = rank;
+
+	// initialization the connection information
+	int di[9], dj[9];
+	dj[0] = rank % Dy;
+	di[0] = rank / Dy;
+	const int ci[9] = { 0,1,0,-1,0,1,-1,-1,1 };
+	const int cj[9] = { 0,0,1,0,-1,1,1,-1,-1 };
+
+	bool w, xc, e, s, yc, n;
+	for (int i = 0; i != 9; i++) {
+
+		di[i] = (di[0] + ci[i]);
+		dj[i] = (dj[0] + cj[i]);
+
+		w = di[i] == -1;
+		e = di[i] == Dx;
+		xc = !(w || e);
+		s = dj[i] == -1;
+		n = dj[i] == Dy;
+		yc = !(s || n);
+
+		if (e && yc && B[1]) { rank_conn[i] = B[1]; }
+		else if (xc && n && B[2]) { rank_conn[i] = B[2]; }
+		else if (w && yc && B[3]) { rank_conn[i] = B[3]; }
+		else if (xc && s && B[4]) { rank_conn[i] = B[4]; }
+		else if (e && n && B[5]) { rank_conn[i] = B[5]; }
+		else if (w && n && B[6]) { rank_conn[i] = B[6]; }
+		else if (w && s && B[7]) { rank_conn[i] = B[7]; }
+		else if (e && s && B[8]) { rank_conn[i] = B[8]; }
+		else {
+			di[i] = di[i] % Dx;
+			dj[i] = dj[i] % Dy;
+			if (di[i] < 0) { di[i] += Dx; }
+			if (dj[i] < 0) { dj[i] += Dy; }
+
+			rank_conn[i] = Dy * di[i] + dj[i];
+		}
+	}
+
+	// TODO: 测试部分 待删去
+	/*
+	if (rank == 3) {
+		cout << rank_conn[6] << '\t' << rank_conn[2] << '\t' << rank_conn[5] << '\n';
+		cout << rank_conn[3] << '\t' << rank_conn[0] << '\t' << rank_conn[1] << '\n';
+		cout << rank_conn[7] << '\t' << rank_conn[4] << '\t' << rank_conn[8] << '\n';
+	}*/
+}
+
 double& LatticePopulation::operator()(int i, int j, int p)
 {
 

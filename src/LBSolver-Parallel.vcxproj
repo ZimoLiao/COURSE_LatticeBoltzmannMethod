@@ -146,15 +146,14 @@
     <ClInclude Include="LatticeFunction.h" />
     <ClInclude Include="LatticeMoment.h" />
     <ClInclude Include="LatticePopulation.h" />
+    <ClInclude Include="LatticeSolver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LatticeFunction.cpp" />
     <ClCompile Include="LatticeMoment.cpp" />
     <ClCompile Include="LatticePopulation.cpp" />
+    <ClCompile Include="LatticeSolver.cpp" />
     <ClCompile Include="Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

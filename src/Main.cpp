@@ -3,7 +3,7 @@
 
 #include"LatticeMoment.h"
 #include"LatticePopulation.h"
-
+#include"LatticeSolver.h"
 
 using namespace std;
 
@@ -13,19 +13,16 @@ int main()
 	int size, rank;
 	MPI_Status status;
 
+	// initialization
 	MPI_Init(NULL, NULL);
-
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-	if (rank == host) {
-		cout << "===========================================================\n";
-		cout << "LBSolver-Parallel start...\n";
-		cout << "===========================================================\n";
-	}
+	LatticeSolver ls;
 
-	cout << "Processor " << rank << " started.\n";
 
+	// sequence computing test
+	/*
 	LatticePopulation lp;
 	double m0[3] = { 1.0,0.0,0.0 };
 	LatticeMoment lm(20, 20, m0);
@@ -56,9 +53,9 @@ int main()
 			//lm.OutputAscii(fname);
 		}
 	}
+	*/
 
 
 	MPI_Finalize();
-
 	return 0;
 }

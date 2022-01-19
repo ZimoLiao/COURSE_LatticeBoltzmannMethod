@@ -109,3 +109,29 @@ void LatticeFunction::CalculateMoment(double* m, const double* f)
 	m[1] /= m[0];
 	m[2] /= m[0];
 }
+
+void LatticeFunction::Init(double tau, double momega1, double momega2, double momega3, double momega4)
+{
+	this->tau = tau;
+	this->momega1 = momega1;
+	this->momega2 = momega2;
+	this->momega3 = momega3;
+	this->momega4 = momega4;
+
+	somega = 1.0 / tau;
+	somegac = 1.0 - somega;
+
+	momega[0] = 0.;
+	momega[1] = momega1;
+	momega[2] = momega2;
+	momega[3] = 0.;
+	momega[4] = momega3;
+	momega[5] = 0.;
+	momega[6] = momega3;
+	momega[7] = momega4;
+	momega[8] = momega4;
+
+	for (int i = 0; i != 9; i++) {
+		momegac[i] = 1. - momega[i];
+	}
+}
