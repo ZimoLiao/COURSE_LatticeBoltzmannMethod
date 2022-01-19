@@ -108,7 +108,7 @@ void LatticeMoment::Init(const LatticeMoment& lm)
 
 void LatticeMoment::SetVelocityShear(double u)
 {
-	double nmode = 2.0;
+	double nmode = 4.0;
 
 	for (int i = 0; i != ni_; i++) {
 		for (int j = 0; j != nj_; j++) {
@@ -120,9 +120,9 @@ void LatticeMoment::SetVelocityShear(double u)
 			}
 
 			// disturbance
-			if (j > nj_ / 3 && j < nj_ * 2 / 3) {
+			if (j > nj_ * (nmode - 0.5) / 2 / nmode - 1 && j < nj_ * (nmode + 0.5) / 2 / nmode - 1) {
 				data_[3 * (nj_ * i + j) + 2] = 0.01 * sin(6.283185307 * (nmode * i / ni_))\
-					* cos(3.141592654 * (j - nj_ / 2. + 1.) / (nj_ / 3.));
+					* cos(3.141592654 * (j - nj_ / 2. + 1.) / (nj_ / 2 / nmode));
 			}
 		}
 	}
