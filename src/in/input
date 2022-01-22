@@ -8,10 +8,10 @@ Nx      Ny
 64      64
 # domain decomposition
 Dx      Dy
-2       2
+2       1
 # boundary types
 1   2   3   4   5   6   7   8
-0   -1  0   -1  -1  -1  -1  -1
+0   0   0   0   0   0   0   0
 
 ## MODEL (D2Q9)
 # collision operators and corresponding relaxation times

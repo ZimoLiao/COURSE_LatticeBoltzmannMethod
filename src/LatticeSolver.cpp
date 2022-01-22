@@ -77,15 +77,25 @@ LatticeSolver::LatticeSolver()
 
 	// input partition do not match the number of processors
 	// TODO: 需要一个全局报错退出函数
-	if (size != (Dx * Dy)) {
+	if (size != (Dx * Dy) || Nx % Dx != 0 || Ny % Dy != 0) {
 		if (rank == host) {
 			cout << "ERROR | part_proc_mismatch\n";
 		}
 		return;
 	}
 
+	int nx = Nx % Dx, ny = Ny % Dy;
+	lm.Init(nx, ny);
+	lp.Init(lm);
+
 	lm.InitParameter(tau, omega_e, omega_ep, omega_q, omega_nu);
 	lp.InitParameter(tau, omega_e, omega_ep, omega_q, omega_nu);
 
 	lp.InitConnection(rank, Dx, Dy, B);
+}
+
+void LatticeSolver::Update()
+{
+	lm.Update(lp);
+	lp.UpdateGhost();
 }

@@ -257,7 +257,7 @@ void LatticeMoment::Update(LatticePopulation& lp)
 
 #ifdef _DEBUG
 
-	cout << "Moment update difference: " << diff << endl;
+	//cout << "Moment update difference: " << diff << endl;
 
 #endif // _DEBUG
 }

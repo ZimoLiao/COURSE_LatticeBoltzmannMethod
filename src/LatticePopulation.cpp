@@ -1,8 +1,5 @@
 ﻿#include "LatticePopulation.h"
 
-#include<iostream>
-using namespace std;
-
 LatticePopulation::LatticePopulation()
 {
 	ni_ = 1;
@@ -284,7 +281,8 @@ void LatticePopulation::InitConnection(int rank, int Dx, int Dy, int B[9])
 		cout << rank_conn[6] << '\t' << rank_conn[2] << '\t' << rank_conn[5] << '\n';
 		cout << rank_conn[3] << '\t' << rank_conn[0] << '\t' << rank_conn[1] << '\n';
 		cout << rank_conn[7] << '\t' << rank_conn[4] << '\t' << rank_conn[8] << '\n';
-	}*/
+	}
+	*/
 }
 
 double& LatticePopulation::operator()(int i, int j, int p)
@@ -468,7 +466,6 @@ void LatticePopulation::CollideMrt(LatticeMoment& lm)
 void LatticePopulation::UpdateGhost()
 {
 	// TODO: consider the sequence of message-passing
-
 	// 9*(sizej_*(i)+j)
 
 
@@ -571,12 +568,12 @@ void LatticePopulation::UpdateGhost()
 	}
 
 	// corners
-	if (rank_conn[5] == rank) {
+	if (rank_conn[5] == rank) { // self-periodic
 		for (int i = 0; i != 9; i++) {
 			data_[size_ - 9 + i] = data_[9 * (sizej_ + 1) + i];
 		}
 	}
-	else if (rank_conn[5] < 0) {
+	else if (rank_conn[5] < 0) { // extrapolation
 		switch (abs(rank_conn[5]))
 		{
 		default:
@@ -584,6 +581,42 @@ void LatticePopulation::UpdateGhost()
 				data_[size_ - 9 + i] = data_[9 * (sizej_ * ni_ + nj_) + i];
 			}
 			break;
+		}
+	}
+	else { // connect to another block (MPI)
+		// TODO: 理清逻辑 如何优化
+		if (rank_conn[5] > rank) {
+			double buffer_send[9], buffer_recv[9];
+			MPI_Status status;
+
+#ifdef _DEBUG
+			cout << rank << " to " << rank_conn[5] << ": " << 7 << endl;
+#endif // _DEBUG
+
+			for (int i = 0; i != 9; i++) { buffer_send[i] = data_[9 * (sizej_*ni_ + nj_) + i]; }
+			MPI_Send(buffer_send, 9, MPI_DOUBLE, rank_conn[5], 7, MPI_COMM_WORLD);
+
+			MPI_Recv(buffer_recv, 9, MPI_DOUBLE, rank_conn[5], 5, MPI_COMM_WORLD, &status);
+			for (int i = 0; i != 9; i++) { data_[9 * (sizej_*ni_ + nj_) + i] = buffer_recv[i]; }
+
+#ifdef _DEBUG
+			cout << "message passing: " << rank_conn[5] << "." << 7 << " to " << rank << "." << 5 << endl;
+#endif // _DEBUG
+
+		}
+		else {
+			double buffer_send[9], buffer_recv[9];
+			MPI_Status status;
+
+			MPI_Recv(buffer_recv, 9, MPI_DOUBLE, rank_conn[5], 5, MPI_COMM_WORLD, &status);
+			for (int i = 0; i != 9; i++) { data_[9 * (sizej_*ni_ + nj_) + i] = buffer_recv[i]; }
+
+#ifdef _DEBUG
+			cout << "message passing: " << rank_conn[5] << "." << 7 << " to " << rank << "." << 5 << endl;
+#endif // _DEBUG
+
+			for (int i = 0; i != 9; i++) { buffer_send[i] = data_[9 * (sizej_*ni_ + nj_) + i]; }
+			MPI_Send(buffer_send, 9, MPI_DOUBLE, rank_conn[5], 7, MPI_COMM_WORLD);
 		}
 	}
 	if (rank_conn[6] == rank) {
@@ -601,7 +634,10 @@ void LatticePopulation::UpdateGhost()
 			break;
 		}
 	}
-	if (rank_conn[7] == rank) {
+	// DELETE
+	cout << rank << " " << rank_conn[7] << endl;
+	// DELETE END
+	if (rank_conn[7] == rank) { 
 		for (int i = 0; i != 9; i++) {
 			data_[i] = data_[9 * (sizej_ * ni_ + nj_) + i];
 		}
@@ -614,6 +650,36 @@ void LatticePopulation::UpdateGhost()
 				data_[i] = data_[9 * (sizej_ + 1) + i];
 			}
 			break;
+		}
+	}
+	else { // connect to another block (MPI)
+		// TODO: 理清逻辑 如何优化
+		if (rank_conn[7] > rank) {
+			double buffer_send[9], buffer_recv[9];
+			MPI_Status status;
+
+			for (int i = 0; i != 9; i++) { buffer_send[i] = data_[9 * (sizej_ + 1) + i]; }
+			MPI_Send(buffer_send, 9, MPI_DOUBLE, rank_conn[7], 5, MPI_COMM_WORLD);
+
+			MPI_Recv(buffer_recv, 9, MPI_DOUBLE, rank_conn[7], 7, MPI_COMM_WORLD, &status);
+			for (int i = 0; i != 9; i++) { data_[i] = buffer_recv[i]; }
+		}
+		else {
+			double buffer_send[9], buffer_recv[9];
+			MPI_Status status;
+
+#ifdef _DEBUG
+			cout << rank << " from " << rank_conn[7] << ": " << 7 << endl;
+#endif // _DEBUG
+
+
+			MPI_Recv(buffer_recv, 9, MPI_DOUBLE, rank_conn[7], 7, MPI_COMM_WORLD, &status);
+			for (int i = 0; i != 9; i++) { data_[i] = buffer_recv[i]; }
+
+			cout << "recived\n";
+
+			for (int i = 0; i != 9; i++) { buffer_send[i] = data_[9 * (sizej_ + 1) + i]; }
+			MPI_Send(buffer_send, 9, MPI_DOUBLE, rank_conn[7], 5, MPI_COMM_WORLD);
 		}
 	}
 	if (rank_conn[8] == rank) {

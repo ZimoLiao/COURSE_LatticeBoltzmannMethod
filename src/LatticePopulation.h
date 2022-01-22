@@ -4,6 +4,10 @@
 #include"LatticeFunction.h"
 #include"LatticeMoment.h"
 
+#include<mpi.h>
+#include<iostream>
+using namespace std;
+
 // Populations for D2Q9
 class LatticePopulation
 {

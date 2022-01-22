@@ -20,6 +20,7 @@ int main()
 
 	LatticeSolver ls;
 
+	ls.Update();
 
 	// sequence computing test
 	/*

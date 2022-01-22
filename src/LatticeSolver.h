@@ -41,12 +41,14 @@ class LatticeSolver
 	LatticeMoment lm;
 	LatticePopulation lp;
 
-	/* functions */
+	/* internal functions */
 	void Ignore(int l);
 
 public:
 	LatticeSolver();
 
+	/* functions */
+	void Update();
 };
 
 #endif // !LATTICESOLVER_H_
