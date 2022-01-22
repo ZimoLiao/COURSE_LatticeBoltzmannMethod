@@ -18,6 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LatticeBound.cpp" />
+    <ClCompile Include="LatticeMoment.cpp" />
+    <ClCompile Include="LatticePopulation.cpp" />
+    <ClCompile Include="LatticeSolver.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LatticeBound.h" />
+    <ClInclude Include="LatticeMoment.h" />
+    <ClInclude Include="LatticePopulation.h" />
+    <ClInclude Include="LatticeSolver.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -134,27 +147,17 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>$(I_MPI_ONEAPI_ROOT)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(I_MPI_ONEAPI_ROOT)\lib\release;$(I_MPI_ONEAPI_ROOT)\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>impi.lib;impicxx.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="LatticeFunction.h" />
-    <ClInclude Include="LatticeMoment.h" />
-    <ClInclude Include="LatticePopulation.h" />
-    <ClInclude Include="LatticeSolver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="LatticeFunction.cpp" />
-    <ClCompile Include="LatticeMoment.cpp" />
-    <ClCompile Include="LatticePopulation.cpp" />
-    <ClCompile Include="LatticeSolver.cpp" />
-    <ClCompile Include="Main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
