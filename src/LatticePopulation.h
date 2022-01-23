@@ -3,11 +3,14 @@
 
 #include<mpi.h>
 #include<iostream>
+#include<vector>
 
 #include"LatticeMoment.h"
+#include"LatticeBound.h"
 
 using std::cout;
 using std::endl;
+using std::vector;
 
 class LatticePopulation
 {
@@ -38,6 +41,8 @@ class LatticePopulation
 	double* send;
 	double* recv;
 	// TODO: lattice boundary units
+	vector<LatticeBound> lb;
+	int nlb = -1;
 
 	/* internal functions */
 	inline int IndexF(int i, int j);
@@ -59,7 +64,9 @@ public:
 	void Init(LatticeMoment& lm);
 
 	void InitParameter(double tau); // for SRT
+
 	void InitConnection(int di, int b[9]);
+	void InitBoundary(LatticeBound& lb);
 
 	/* functions */
 	void Stream();

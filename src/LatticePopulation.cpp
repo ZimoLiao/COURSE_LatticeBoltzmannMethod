@@ -198,6 +198,12 @@ void LatticePopulation::InitConnection(int di, int b[9])
 	}
 }
 
+void LatticePopulation::InitBoundary(LatticeBound & lb)
+{
+	nlb++;
+	this->lb.push_back(lb);
+}
+
 void LatticePopulation::Stream()
 {
 	// 1 direction
@@ -253,6 +259,36 @@ void LatticePopulation::Stream()
 	for (int i = ni; i > 0; i--) {
 		for (int j = nj; j > 0; j--) {
 			data[9 * (sizej * i + j) + 8] = data[9 * (sizej * (i - 1) + (j + 1)) + 8];
+		}
+	}
+}
+
+void LatticePopulation::Boundary()
+{
+	for (int b = 0; b <= nlb; b++) {
+		switch (lb[b].type)
+		{
+		case 0: // NEBB-0
+			for (int i = lb[b].is; i != lb[b].ie; i++) {
+				for (int j = lb[b].js; j != lb[b].je; j++) {
+					lb[b].CalculateNebb0(&data[IndexF(i, j)]);
+				}
+			}
+			break;
+		case 1: // NEBB-V
+			for (int i = lb[b].is; i != lb[b].ie; i++) {
+				for (int j = lb[b].js; j != lb[b].je; j++) {
+					lb[b].CalculateNebbV(&data[IndexF(i, j)]);
+				}
+			}
+			break;
+		case 2: // NEBB-P
+			for (int i = lb[b].is; i != lb[b].ie; i++) {
+				for (int j = lb[b].js; j != lb[b].je; j++) {
+					lb[b].CalculateNebbP(&data[IndexF(i, j)]);
+				}
+			}
+			break;
 		}
 	}
 }

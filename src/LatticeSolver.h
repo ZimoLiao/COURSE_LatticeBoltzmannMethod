@@ -3,6 +3,10 @@
 
 #include<fstream>;
 
+#include"LatticeBound.h"
+#include"LatticeMoment.h"
+#include"LatticePopulation.h"
+
 using namespace std;
 
 /* Lattice Boltzmann solver for D2Q9 model 
@@ -31,7 +35,8 @@ class LatticeSolver
 	fstream fin, fout;
 
 	/* data */
-
+	LatticeMoment lm;
+	LatticePopulation lp;
 
 	/* internal functions */
 

@@ -10,11 +10,7 @@ int main()
 {
 	MPI_Init(NULL, NULL);
 
-	LatticeMoment lm;
-	lm.Init(0, 0, 10, 10);
-	LatticePopulation lp;
-	lp.Init(lm);
-	lp.Stream();
+
 
 
 	MPI_Finalize();
