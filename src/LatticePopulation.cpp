@@ -420,6 +420,7 @@ void LatticePopulation::UpdateGhost()
 		}
 	}
 
+	MPI_Barrier(MPI_COMM_WORLD);
 	FlushBuffer(send);
 	FlushBuffer(recv);
 
@@ -430,7 +431,7 @@ void LatticePopulation::UpdateGhost()
 		{
 		default:
 			for (int i = 0; i != 9; i++) {
-				data[size - 9 + i] = data[9 * (sizej * ni + nj) + i];
+				data[IndexF(ni + 1, nj + 1) + i] = data[9 * (sizej * ni + nj) + i];
 			}
 			break;
 		}

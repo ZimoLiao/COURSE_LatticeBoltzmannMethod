@@ -46,6 +46,10 @@ LatticeSolver::LatticeSolver()
 		for (int i = 1; i != 9; i++) {
 			b[i] = buffer1[i + 3];
 		}
+
+		is_srt = buffer1[12];
+		is_mrt = buffer1[13];
+
 		tau = buffer2[0];
 		omega_e = buffer2[1];
 		omega_ep = buffer2[2];
