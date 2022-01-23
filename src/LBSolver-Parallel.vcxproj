@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LatticeBound.cpp" />
+    <ClCompile Include="LatticeEntity.cpp" />
     <ClCompile Include="LatticeMoment.cpp" />
     <ClCompile Include="LatticePopulation.cpp" />
     <ClCompile Include="LatticeSolver.cpp" />
@@ -27,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LatticeBound.h" />
+    <ClInclude Include="LatticeEntity.h" />
     <ClInclude Include="LatticeMoment.h" />
     <ClInclude Include="LatticePopulation.h" />
     <ClInclude Include="LatticeSolver.h" />
