@@ -10,6 +10,7 @@
 using std::string;
 using std::ofstream;
 using std::endl;
+using std::to_string;
 
 /* Moments <rho, u, v> */
 class LatticeMoment
@@ -26,12 +27,12 @@ class LatticeMoment
 	/* data */
 	double* data;
 	double diff = 1.0;
-	double step = 0;
+	int step = 0;
 
 
 	/* internal functions */
 	inline int IndexM(int i, int j);
-	
+
 	void CalculateMoment(double* m, const double* f);
 
 public:
@@ -49,6 +50,7 @@ public:
 	void Update(LatticePopulation& lp);
 
 	void OutputAscii(string fname);
+	void OutputAscii();
 
 };
 

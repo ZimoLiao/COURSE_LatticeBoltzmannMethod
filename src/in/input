@@ -1,21 +1,32 @@
-## INPUT FILE FOR LBSOLVER-PARALLEL
-# case name
-test
-
+### INPUT FILE FOR LBSOLVER-PARALLEL
 ## GEOMETRY
 # grid
 Nx      Ny
-64      64
+96      64
 # domain decomposition
 Dx      Dy
-2       1
+3       1
 # boundary types
 1   2   3   4   5   6   7   8
-0   0   0   0   0   0   0   0
+-1   -1   -1   -1   -1   -1   -1   -1
 
 ## MODEL (D2Q9)
 # collision operators and corresponding relaxation times
 [SRT]   tau
-1       0.6
+1       0.8
 [MRT]   omega_e     omega_ep    omega_q     omega_nu   
 0       0.2         1.0         1.0         1.8
+
+## UNITS
+# fluid boundary 
+number of fluid boundaries
+8
+type    direct  istart  iend    jstart  jend    rho     u       v
+0       2       1       95      0       1       1.0     0.0     0.0
+0       4       1       95      63      64      1.0     0.0     0.0
+2       1       0       1       1       63      1.005   0.0     0.0
+0       5       0       1       0       1       1.005   0.0     0.0
+0       8       0       1       63      64      1.005   0.0     0.0
+0       6       95      96      0       1       0.995   0.0     0.0
+0       7       95      96      63      64      0.995   0.0     0.0
+2       3       95      96      1       63      0.995   0.0     0.0

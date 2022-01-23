@@ -77,8 +77,8 @@ LatticePopulation::LatticePopulation()
 	for (int i = 1; i != 9; i++) { rank[i] = rank[0]; }
 
 	data = new double[size];
-	send = new double[sizej];
-	recv = new double[sizej];
+	send = new double[sizej * 9];
+	recv = new double[sizej * 9];
 
 	double feq[9], m[3] = { 1.0,0.0,0.0 };
 	CalculateFeq(feq, m);
@@ -107,8 +107,8 @@ void LatticePopulation::Init(LatticeMoment & lm)
 	for (int i = 1; i != 9; i++) { rank[i] = rank[0]; }
 
 	data = new double[size];
-	send = new double[sizej];
-	recv = new double[sizej];
+	send = new double[sizej * 9];
+	recv = new double[sizej * 9];
 
 	double feq[9];
 	int find, mind;
@@ -377,47 +377,54 @@ void LatticePopulation::UpdateGhost()
 	// message-passing
 	if (rank[0] == 0) {
 		// exchange data with right block
-		PackBuffer(send, 1);
-		MPI_Send(send, 9 * sizej, MPI_DOUBLE, rank[1], rank[0], MPI_COMM_WORLD);
+		if (rank[1] >= 0) {
+			PackBuffer(send, 1);
+			MPI_Send(send, 9 * sizej, MPI_DOUBLE, rank[1], rank[0], MPI_COMM_WORLD);
 
-		MPI_Recv(recv, 9 * sizej, MPI_DOUBLE, rank[1], rank[1], MPI_COMM_WORLD, &stat);
-		UnpackBuffer(recv, 1);
+			MPI_Recv(recv, 9 * sizej, MPI_DOUBLE, rank[1], rank[1], MPI_COMM_WORLD, &stat);
+			UnpackBuffer(recv, 1);
 
 #ifdef _DEBUG
-		//cout << "message-passing between " << rank[0] << " and " << rank[1] << endl;
+			cout << "message-passing between " << rank[0] << " and " << rank[1] << endl;
 #endif // _DEBUG
+		}
+		if (rank[3] >= 0) {
+			// exchange data with left block
+			MPI_Recv(recv, 9 * sizej, MPI_DOUBLE, rank[3], rank[3], MPI_COMM_WORLD, &stat);
+			UnpackBuffer(recv, 3);
 
-		// exchange data with left block
-		MPI_Recv(recv, 9 * sizej, MPI_DOUBLE, rank[3], rank[3], MPI_COMM_WORLD, &stat);
-		UnpackBuffer(recv, 3);
-
-		PackBuffer(send, 3);
-		MPI_Send(send, 9 * sizej, MPI_DOUBLE, rank[3], rank[0], MPI_COMM_WORLD);
+			PackBuffer(send, 3);
+			MPI_Send(send, 9 * sizej, MPI_DOUBLE, rank[3], rank[0], MPI_COMM_WORLD);
+		}
 	}
 	else {
 		// exchange data with left block
-		MPI_Recv(recv, 9 * sizej, MPI_DOUBLE, rank[3], rank[3], MPI_COMM_WORLD, &stat);
-		UnpackBuffer(recv, 3);
+		if (rank[3] >= 0) {
+			MPI_Recv(recv, 9 * sizej, MPI_DOUBLE, rank[3], rank[3], MPI_COMM_WORLD, &stat);
+			UnpackBuffer(recv, 3);
 
-		PackBuffer(send, 3);
-		MPI_Send(send, 9 * sizej, MPI_DOUBLE, rank[3], rank[0], MPI_COMM_WORLD);
-
+			PackBuffer(send, 3);
+			MPI_Send(send, 9 * sizej, MPI_DOUBLE, rank[3], rank[0], MPI_COMM_WORLD);
+		}
 		// exchange data with right block
-		PackBuffer(send, 1);
-		MPI_Send(send, 9 * sizej, MPI_DOUBLE, rank[1], rank[0], MPI_COMM_WORLD);
+		if (rank[1] >= 0) {
+			PackBuffer(send, 1);
+			MPI_Send(send, 9 * sizej, MPI_DOUBLE, rank[1], rank[0], MPI_COMM_WORLD);
 
-		MPI_Recv(recv, 9 * sizej, MPI_DOUBLE, rank[1], rank[1], MPI_COMM_WORLD, &stat);
-		UnpackBuffer(recv, 1);
+			MPI_Recv(recv, 9 * sizej, MPI_DOUBLE, rank[1], rank[1], MPI_COMM_WORLD, &stat);
+			UnpackBuffer(recv, 1);
 
 #ifdef _DEBUG
-		//cout << "message-passing between " << rank[0] << " and " << rank[1] << endl;
+			cout << "message-passing between " << rank[0] << " and " << rank[1] << endl;
 #endif // _DEBUG
+		}
 	}
 
 	FlushBuffer(send);
 	FlushBuffer(recv);
 
-	// extrapolation for corners
+
+	// extrapolation
 	if (rank[5] < 0) {
 		switch (abs(rank[5]))
 		{

@@ -65,9 +65,9 @@ void LatticeMoment::Init(int i0, int j0, int ni, int nj)
 
 	data = new double[size];
 	for (int i = 0; i != sizeij; i++) {
-		data[i + 0] = 1.0;
-		data[i + 1] = 0.0;
-		data[i + 2] = 0.0;
+		data[3 * i + 0] = 1.0;
+		data[3 * i + 1] = 0.0;
+		data[3 * i + 2] = 0.0;
 	}
 }
 
@@ -92,11 +92,49 @@ void LatticeMoment::Update(LatticePopulation & lp)
 				+ (v - data[mind + 2]) * (v - data[mind + 2]));
 		}
 	}
+
+	step++;
 }
 
 void LatticeMoment::OutputAscii(string fname)
 {
 	ofstream fout;
+	fout.open(fname);
+
+	// header
+	fout << "TITLE     = \" moment \"" << endl;
+	fout << "FILETYPE  = FULL" << endl;
+	fout << "VARIABLES = \"x\", \"y\", \"rho\", \"u\", \"v\"" << endl;
+	fout << "ZONE    F = point" << endl;
+	fout << "        I = " << ni << endl;
+	fout << "        J = " << nj << endl;
+	fout << "SOLUTIONTIME = " << step << endl;
+
+	// flow variables (moments)
+	int mind;
+	for (int j = 0; j != nj; j++) {
+		for (int i = 0; i != ni; i++) {
+			mind = IndexM(i, j);
+
+			fout << std::left << std::setw(8) << i0 + i \
+				<< ' ' << std::left << std::setw(8) << j0 + j \
+				<< ' ' << std::scientific << std::setprecision(12) << data[mind] \
+				<< ' ' << std::scientific << std::setprecision(12) << data[mind + 1] \
+				<< ' ' << std::scientific << std::setprecision(12) << data[mind + 2] \
+				<< endl;
+		}
+	}
+
+	fout.close();
+}
+
+void LatticeMoment::OutputAscii()
+{
+	ofstream fout;
+
+	int rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	string fname = "out/output_" + to_string(step) + "_" + to_string(rank) + ".dat";
 	fout.open(fname);
 
 	// header

@@ -38,6 +38,34 @@ void LatticeBound::CalculateNebb0(double * f)
 		f[8] = f[6] - 0.5*(f[1] - f[3]);
 		f[7] = f[5] + 0.5*(f[1] - f[3]);
 		break;
+	case 5:
+		f[1] = f[3];
+		f[2] = f[4];
+		f[5] = f[7];
+		f[6] = 0.5*(rho - f[0] - 2.0*(f[3] + f[4] + f[7]));
+		f[8] = f[6];
+		break;
+	case 6:
+		f[3] = f[1];
+		f[2] = f[4];
+		f[6] = f[8];
+		f[5] = 0.5*(rho - f[0] - 2.0*(f[1] + f[4] + f[8]));
+		f[7] = f[5];
+		break;
+	case 7:
+		f[3] = f[1];
+		f[4] = f[2];
+		f[7] = f[5];
+		f[6] = 0.5*(rho - f[0] - 2.0*(f[1] + f[2] + f[5]));
+		f[8] = f[6];
+		break;
+	case 8:
+		f[1] = f[3];
+		f[4] = f[2];
+		f[8] = f[6];
+		f[5] = 0.5*(rho - f[0] - 2.0*(f[2] + f[3] + f[6]));
+		f[7] = f[5];
+		break;
 	}
 }
 
@@ -74,6 +102,18 @@ void LatticeBound::CalculateNebbV(double * f)
 		f[8] = f[6] - 0.5*(f[1] - f[3]) + 0.5*rho*u - rho * v / 6.0;
 		f[7] = f[5] + 0.5*(f[1] - f[3]) - 0.5*rho*u - rho * v / 6.0;
 		break;
+	case 5:
+
+		break;
+	case 6:
+
+		break;
+	case 7:
+
+		break;
+	case 8:
+
+		break;
 	}
 }
 
@@ -109,6 +149,18 @@ void LatticeBound::CalculateNebbP(double * f)
 		f[4] = f[2] - 2.0*jy / 3.0;
 		f[8] = f[6] - 0.5*(f[1] - f[3]) - jy / 6.0;
 		f[7] = f[5] + 0.5*(f[1] - f[3]) - jy / 6.0;
+		break;
+	case 5:
+
+		break;
+	case 6:
+
+		break;
+	case 7:
+
+		break;
+	case 8:
+
 		break;
 	}
 }
