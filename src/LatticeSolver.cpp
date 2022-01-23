@@ -63,6 +63,7 @@ LatticeSolver::LatticeSolver()
 	lp.Init(lm);
 
 	lp.InitParameter(tau);
+	lp.InitParameter(omega_e, omega_ep, omega_q, omega_nu);
 	lp.InitConnection(di, b);
 
 	// read in boundaries
@@ -92,13 +93,15 @@ LatticeSolver::LatticeSolver()
 			jsrank = js + 1;
 			jerank = je + 1;
 
+			cout << rho << " from " << rank << endl;
+
 			LatticeBound lb(type, direct, isrank, ierank, jsrank, jerank, rho, u, v);
 			lp.InitBoundary(lb);
 
 			nlbrank++;
 		}
 	}
-	cout << "rank " << rank << " has " << nlbrank << " boundary units.\n";
+	//cout << "rank " << rank << " has " << nlbrank << " boundary units.\n";
 
 	fin.close();
 }
@@ -108,11 +111,23 @@ void LatticeSolver::Calculate()
 	if (is_srt) {
 		lp.CollideSrt(lm);
 	}
+	else if (is_mrt) {
+		lp.CollideMrt(lm);
+	}
 	lp.UpdateGhost();
 	lp.Stream();
 	lp.Boundary();
 
 	lm.Update(lp);
+	double diff_rank = lm.diff;
+	double diff[128] = { 0.0 };
+	MPI_Gather(&diff_rank, 1, MPI_DOUBLE, diff, size, MPI_DOUBLE, host, MPI_COMM_WORLD);
+	if (rank == host) {
+		diff_rank = 0.0;
+		for (int i = 0; i != size; i++) { diff_rank += diff[i]; }
+		cout << "step " << setw(8) << lm.step << "  diff " << setw(10) << diff_rank << endl;
+	}
+
 }
 
 void LatticeSolver::OutputAscii()

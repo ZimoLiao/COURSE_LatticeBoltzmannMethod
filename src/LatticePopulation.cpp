@@ -15,6 +15,44 @@ void LatticePopulation::CalculateFeq(double * f, const double * m)
 	}
 }
 
+void LatticePopulation::CalculateFcollMrt(double * f, const double * moment)
+{
+	double rho = moment[0], u = moment[1], v = moment[2];
+	double m[9] = { 0.0 };
+	for (int i = 0; i != 9; i++) {
+		for (int j = 0; j != 9; j++) {
+			m[i] += M[i][j] * f[j];
+		}
+	}
+
+	double jx = rho * u, jy = rho * v;
+	// ref: https://zhuanlan.zhihu.com/p/457061066
+	double meq[9] = {
+			rho,
+			rho * (-2. / 3. + 3. * u * u + 3. * v * v),
+			rho * (1. / 3. - 3. * u * u - 3. * v * v) / 3.,
+			jx,
+			-jx / 3.,
+			jy,
+			-jy / 3.,
+			rho * (u * u - v * v),
+			rho * u * v
+	};
+
+	// TODO: need optimization!!!
+	for (int i = 0; i != 9; i++) { // mstar
+		m[i] *= momegac[i];
+		m[i] += momega[i] * meq[i];
+	}
+
+	for (int i = 0; i != 9; i++) {
+		f[i] = 0.0;
+		for (int j = 0; j != 9; j++) {
+			f[i] += Minv[i][j] * m[j];
+		}
+	}
+}
+
 void LatticePopulation::PackBuffer(double * buf, int direct)
 {
 	switch (direct)
@@ -150,6 +188,22 @@ void LatticePopulation::InitParameter(double tau)
 	this->tau = tau;
 	omega = 1.0 / tau;
 	omegac = 1.0 - omega;
+}
+
+void LatticePopulation::InitParameter(double omega_e, double omega_ep, double omega_q, double omega_nu)
+{
+	this->omega_e = omega_e;
+	this->omega_ep = omega_ep;
+	this->omega_q = omega_q;
+	this->omega_nu = omega_nu;
+
+	momega[1] = omega_e;
+	momega[2] = omega_ep;
+	momega[3] = omega_q;
+	momega[6] = omega_q;
+	momega[7] = omega_nu;
+	momega[8] = omega_nu;
+	for (int i = 0; i != 9; i++) { momegac[i] = 1.0 - momega[i]; }
 }
 
 void LatticePopulation::InitConnection(int di, int b[9])
@@ -313,6 +367,19 @@ void LatticePopulation::CollideSrt(LatticeMoment & lm)
 	}
 }
 
+void LatticePopulation::CollideMrt(LatticeMoment & lm)
+{
+	int find, mind;
+	for (int i = 0; i != ni; i++) {
+		for (int j = 0; j != nj; j++) {
+			find = IndexF(i + 1, j + 1);
+			mind = lm.IndexM(i, j);
+
+			CalculateFcollMrt(&data[find], &lm.data[mind]);
+		}
+	}
+}
+
 void LatticePopulation::UpdateGhost()
 {
 	MPI_Status stat;
@@ -385,7 +452,7 @@ void LatticePopulation::UpdateGhost()
 			UnpackBuffer(recv, 1);
 
 #ifdef _DEBUG
-			cout << "message-passing between " << rank[0] << " and " << rank[1] << endl;
+			//cout << "message-passing between " << rank[0] << " and " << rank[1] << endl;
 #endif // _DEBUG
 		}
 		if (rank[3] >= 0) {
@@ -415,7 +482,7 @@ void LatticePopulation::UpdateGhost()
 			UnpackBuffer(recv, 1);
 
 #ifdef _DEBUG
-			cout << "message-passing between " << rank[0] << " and " << rank[1] << endl;
+			//cout << "message-passing between " << rank[0] << " and " << rank[1] << endl;
 #endif // _DEBUG
 		}
 	}

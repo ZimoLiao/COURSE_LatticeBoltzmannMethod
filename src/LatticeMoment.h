@@ -26,8 +26,6 @@ class LatticeMoment
 
 	/* data */
 	double* data;
-	double diff = 1.0;
-	int step = 0;
 
 
 	/* internal functions */
@@ -36,6 +34,9 @@ class LatticeMoment
 	void CalculateMoment(double* m, const double* f);
 
 public:
+	double diff = 1.0;
+	int step = 0;
+
 	friend class LatticePopulation;
 
 	/* constructors & destructor */
