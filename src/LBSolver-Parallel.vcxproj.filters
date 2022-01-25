@@ -15,29 +15,41 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LatticePopulation.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="LatticeMoment.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="LatticeFunction.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="LatticePopulation.cpp">
+    <ClCompile Include="Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LatticeSolver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="LatticeMoment.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="LatticePopulation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LatticeFunction.cpp">
+    <ClCompile Include="LatticeBound.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="LatticeEntity.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LatticeSolver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticeMoment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticePopulation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticeBound.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticeEntity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
