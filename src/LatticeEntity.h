@@ -11,11 +11,13 @@ class LatticeEntity
 {
 	/* particle */
 	double r;
-	double x, y, theta;
+	double x, y, a;
+	double ux, uy, ua;
+	double ax, ay, aa;
 
 	/* markers */
 	int nm;
-	double dtheta;
+	double da;
 	double* xm, *ym;
 
 	/* internal functions */
