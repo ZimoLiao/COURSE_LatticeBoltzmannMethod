@@ -6,6 +6,7 @@
 #include<fstream>
 #include<algorithm>
 #include<vector>
+#include<string>
 
 #include"LatticeBound.h"
 #include"LatticeEntity.h"
@@ -44,6 +45,8 @@ class LatticeSolver
 
 
 	/* data */
+	int step = 0;
+
 	// moment & population
 	LatticeMoment lm;
 	LatticePopulation lp;
@@ -56,18 +59,21 @@ class LatticeSolver
 
 	/* internal functions */
 	void Ignore(int l);
+
 	void InitParameter();
 	void InitBoundary();
 	void InitEntity();
+
+	
 
 public:
 	/* constructor */
 	LatticeSolver();
 
-
 	/* control functions */
 	void Calculate();
-	void WriteAscii();
+	void WriteUnit();
+	void WriteFlow();
 
 };
 

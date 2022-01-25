@@ -9,6 +9,13 @@ using std::vector;
 
 class LatticeMoment
 {
+	/* parameters */
+	// geometry
+	int ni, nj, sizeij, size;
+
+	// velocity set
+	const double cx[9] = { 0.,1.,0.,-1.,0.,1.,-1.,-1.,1. };
+	const double cy[9] = { 0.,0.,1.,0.,-1.,1.,1.,-1.,-1. };
 
 	/* data */
 	// moments array
@@ -25,6 +32,8 @@ public:
 
 	/* initialization */
 	void InitEntity(LatticeEntity newle);
+
+
 
 };
 

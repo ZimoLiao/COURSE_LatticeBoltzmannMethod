@@ -106,6 +106,19 @@ void LatticeSolver::InitEntity()
 	MPI_Barrier(MPI_COMM_WORLD);
 }
 
+void LatticeSolver::Calculate()
+{
+}
+
+void LatticeSolver::WriteUnit()
+{
+	
+}
+
+void LatticeSolver::WriteFlow()
+{
+}
+
 LatticeSolver::LatticeSolver()
 {
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -144,3 +157,4 @@ LatticeSolver::LatticeSolver()
 	// entities (particles)
 	InitEntity();
 }
+
