@@ -47,6 +47,7 @@ void LatticeSolver::InitParameter()
 	nj = ny / dj;
 	ns = ni * rank;
 	ne = ni * (rank + 1) - 1;
+
 }
 
 void LatticeSolver::InitBoundary()
@@ -95,28 +96,15 @@ void LatticeSolver::InitEntity()
 
 		if (newle.IsExist()) {
 			lm.InitEntity(newle);
+
 		}
 		if (rank == host) {
 			le.push_back(newle);
-			nle++;
 		}
 	}
 
 	fin.close();
 	MPI_Barrier(MPI_COMM_WORLD);
-}
-
-void LatticeSolver::Calculate()
-{
-}
-
-void LatticeSolver::WriteUnit()
-{
-	
-}
-
-void LatticeSolver::WriteFlow()
-{
 }
 
 LatticeSolver::LatticeSolver()
@@ -156,5 +144,28 @@ LatticeSolver::LatticeSolver()
 
 	// entities (particles)
 	InitEntity();
+}
+
+void LatticeSolver::WriteUnit()
+{
+	if (rank == host) {
+		/* calculate lattice type */
+		int* type = new int[nx*ny];
+		for (int i = 0; i != nx * ny; i++) { type[i] = 0; }
+		for (int ie = 0; ie != nle; ie++) {
+
+		}
+
+
+		/* write tecplot ascii format file */
+		string fname = "out/unit_" + to_string(step) + ".dat";
+		fout.open(fname);
+
+
+
+		fout.close();
+
+		delete[] type;
+	}
 }
 

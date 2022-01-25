@@ -71,7 +71,6 @@ public:
 	LatticeSolver();
 
 	/* control functions */
-	void Calculate();
 	void WriteUnit();
 	void WriteFlow();
 
