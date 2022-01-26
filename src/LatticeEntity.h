@@ -42,6 +42,12 @@ public:
 
 	/* functions */
 	bool IsExist();
+
+	int get_nm();
+	double get_xm(int im);
+	double get_ym(int im);
+	double get_uxm(int im);
+	double get_uym(int im);
 };
 
 

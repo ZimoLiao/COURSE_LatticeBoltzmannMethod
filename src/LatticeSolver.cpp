@@ -149,23 +149,41 @@ LatticeSolver::LatticeSolver()
 void LatticeSolver::WriteUnit()
 {
 	if (rank == host) {
-		/* calculate lattice type */
+		/* calculate lattice type
 		int* type = new int[nx*ny];
 		for (int i = 0; i != nx * ny; i++) { type[i] = 0; }
 		for (int ie = 0; ie != nle; ie++) {
 
 		}
-
+		delete[] type;
+		*/
 
 		/* write tecplot ascii format file */
 		string fname = "out/unit_" + to_string(step) + ".dat";
 		fout.open(fname);
 
+		int nm = 0;
+		for (int ie = 0; ie != nle; ie++) {
+			nm += le[ie].get_nm();
+		}
 
+		// header
+		fout << "TITLE     = Particles" << endl;
+		fout << "FILETYPE  = FULL" << endl;
+		fout << "VARIABLES = xp yp up vp" << endl;
+		fout << "ZONE    F = point" << endl;
+		fout << "        I = " << nm << endl;
+		fout << "SOLUTIONTIME = " << step << endl;
+
+		// particles
+		for (int ie = 0; ie != nle; ie++) {
+			for (int im = 0; im != le[ie].get_nm(); im++) {
+				fout << le[ie].get_xm(im) << ' ' << le[ie].get_ym(im) << ' ' \
+					<< le[ie].get_uxm(im) << ' ' << le[ie].get_uym(im) << endl;
+			}
+		}
 
 		fout.close();
-
-		delete[] type;
 	}
 }
 

@@ -5,10 +5,7 @@ inline bool LatticeEntity::IsExist(int im)
 	return xm[im] > -2.0 && xm[im] < (xe - xs + 1.0);
 }
 
-LatticeEntity::LatticeEntity(int index_global, double r, \
-	double xg, double yg, double phi, \
-	double xs, double xe, double ys, double ye, \
-	double ux0, double uy0, double uphi0)
+LatticeEntity::LatticeEntity(int index_global, double r, double xg, double yg, double phi, double xs, double xe, double ys, double ye, double ux0, double uy0, double uphi0)
 {
 	this->index_global = index_global;
 
@@ -96,4 +93,29 @@ bool LatticeEntity::IsExist()
 		}
 	}
 	return false;
+}
+
+int LatticeEntity::get_nm()
+{
+	return nm;
+}
+
+double LatticeEntity::get_xm(int im)
+{
+	return xm[im];
+}
+
+double LatticeEntity::get_ym(int im)
+{
+	return ym[im];
+}
+
+double LatticeEntity::get_uxm(int im)
+{
+	return uxm[im];
+}
+
+double LatticeEntity::get_uym(int im)
+{
+	return uym[im];
 }
