@@ -134,6 +134,9 @@ void LatticeBlock::FlushBuffer(double * buf)
 
 LatticeBlock::LatticeBlock()
 {
+	MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+	MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+
 	data = new double[1];
 	send = new double[1];
 	recv = new double[1];
@@ -172,7 +175,7 @@ void LatticeBlock::InitGeom(int x0, int y0, int ni, int nj, int tg[5])
 				ng[i] = 1;
 			}
 			else {
-				ng[i] = 3;
+				ng[i] = ngconn;
 			}
 		}
 	}
@@ -204,19 +207,114 @@ void LatticeBlock::InitParam(double tau)
 void LatticeBlock::UpdateGhost()
 {
 	/* top and bottom sides */
-	if (tg[2] < 0) {
+	int ind, indg;
 
+	if (tg[2] < 0) { // TODO: direct extrapolation only 
+		for (int i = 0; i != ni; i++) {
+			ind = Index(i, nj - 1);
+			indg = ind + nvar;
+			for (int v = 0; v != nvar; v++) {
+				data[indg + v] = data[ind + v];
+			}
+		}
 	}
-	else if (tg[2] > 0) {
-
+	else if (tg[2] > 0) { // periodic in y-direction
+		for (int i = 0; i != ni; i++) {
+			ind = Index(i, 0);
+			indg = Index(i, nj);
+			for (int v = 0; v != nvar; v++) {
+				data[indg + v] = data[ind + v];
+			}
+		}
+	}
+	if (tg[4] < 0) { // TODO: direct extrapolation only
+		for (int i = 0; i != ni; i++) {
+			ind = Index(i, 0);
+			indg = ind - nvar;
+			for (int v = 0; v != nvar; v++) {
+				data[indg + v] = data[ind + v];
+			}
+		}
+	}
+	else if (tg[4] > 0) { // periodic in y-direction
+		for (int i = 0; i != ni; i++) {
+			ind = Index(i, nj - 1);
+			indg = Index(i, -1);
+			for (int v = 0; v != nvar; v++) {
+				data[indg + v] = data[ind + v];
+			}
+		}
 	}
 
 
 	/* left and right sides */
-#ifdef PARALLEL
-	
-	MPI_Status status;
+	// extrapolation boundary
+	if (tg[1] < 0) {
+		ind = Index(ni - 1, -ng[4]);
+		indg = Index(ni, -ng[4]);
+		for (int i = 0; i != nvar * sizej; i++) {
+			data[indg + i] = data[ind + i];
+		}
+	}
+	if (tg[3] < 0) {
+		ind = Index(0, -ng[4]);
+		indg = Index(-1, -ng[4]);
+		for (int i = 0; i != nvar * sizej; i++) {
+			data[indg + i] = data[ind + i];
+		}
+	}
 
-#endif // PARALLEL
-	
+	// connect to other blocks
+	if (mpi_size > 1) { // parallel
+		MPI_Status status;
+
+		int rank3 = mpi_rank - 1, rank1 = (mpi_rank + 1) % mpi_size;
+		if (rank3 < 0) { rank3 += mpi_size; }
+
+		if (mpi_rank % 2 == 0) {
+			if (tg[1] > 0) {
+				PackBuffer(send, 1);
+				MPI_Send(send, sizebuf, MPI_DOUBLE, rank1, mpi_rank, MPI_COMM_WORLD);
+
+				MPI_Recv(recv, sizebuf, MPI_DOUBLE, rank1, rank1, MPI_COMM_WORLD, &status);
+				UnpackBuffer(recv, 1);
+
+#ifdef _DEBUG
+				cout << "message-passing between " << mpi_rank << " and " << rank1 << endl;
+#endif // _DEBUG
+			}
+
+			if (tg[3] > 0) {
+				MPI_Recv(recv, sizebuf, MPI_DOUBLE, rank3, rank3, MPI_COMM_WORLD, &status);
+				UnpackBuffer(recv, 3);
+
+				PackBuffer(send, 3);
+				MPI_Send(send, sizebuf, MPI_DOUBLE, rank3, mpi_rank, MPI_COMM_WORLD);
+			}
+		}
+		else {
+			if (tg[3] > 0) {
+				MPI_Recv(recv, sizebuf, MPI_DOUBLE, rank3, rank3, MPI_COMM_WORLD, &status);
+				UnpackBuffer(recv, 3);
+
+				PackBuffer(send, 3);
+				MPI_Send(send, sizebuf, MPI_DOUBLE, rank3, mpi_rank, MPI_COMM_WORLD);
+			}
+
+			if (tg[1] > 0) {
+				PackBuffer(send, 1);
+				MPI_Send(send, sizebuf, MPI_DOUBLE, rank1, mpi_rank, MPI_COMM_WORLD);
+
+				MPI_Recv(recv, sizebuf, MPI_DOUBLE, rank1, rank1, MPI_COMM_WORLD, &status);
+				UnpackBuffer(recv, 1);
+
+#ifdef _DEBUG
+				cout << "message-passing between " << mpi_rank << " and " << rank1 << endl;
+#endif // _DEBUG
+			}
+		}
+	}
+	else { // serial actually
+
+	}
 }

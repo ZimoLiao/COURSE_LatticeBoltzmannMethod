@@ -1,12 +1,7 @@
 #ifndef LATTICEBLOCK_H_
 #define LATTICEBLOCK_H_
 
-#include"Head.h"
-
-#ifdef PARALLEL
 #include<mpi.h>
-#endif // PARALLEL
-
 #include<iostream>
 #include<algorithm>
 
@@ -16,6 +11,11 @@ using std::max;
 
 class LatticeBlock
 {
+protected:
+	/* MPI */
+	int mpi_rank, mpi_size;
+
+
 	/* physics parameters */
 	// velocity set (D2Q9)
 	const double cx[9] = { 0.,1.,0.,-1.,0.,1.,-1.,-1.,1. };
@@ -30,6 +30,8 @@ class LatticeBlock
 	int x0, y0; // origin position in global coordinate
 
 	const int nvar = 1; // number of variables
+	const int ngconn = 1; // number of ghost layers
+
 	int ni, nj, sizei, sizej, sizeij, size, sizebuf; // size of data
 
 	int ng[5] = { 0 }; // size of ghost layers

@@ -28,11 +28,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LatticeBlock.cpp" />
+    <ClCompile Include="LatticeMoment.cpp" />
+    <ClCompile Include="LatticePopulation.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Head.h" />
     <ClInclude Include="LatticeBlock.h" />
+    <ClInclude Include="LatticeMoment.h" />
+    <ClInclude Include="LatticePopulation.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

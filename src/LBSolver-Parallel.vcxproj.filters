@@ -21,12 +21,21 @@
     <ClCompile Include="LatticeBlock.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="LatticePopulation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LatticeMoment.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LatticeBlock.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Head.h">
+    <ClInclude Include="LatticePopulation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticeMoment.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
