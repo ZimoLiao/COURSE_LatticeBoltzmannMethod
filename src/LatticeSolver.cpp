@@ -94,17 +94,60 @@ void LatticeSolver::InitEntity()
 			double(rank)*ni, double(rank + 1.0)*ni - 1, 0, nj - 1, \
 			ux0, uy0, uphi0);
 
+		int exist = 0;
 		if (newle.IsExist()) {
+			exist = 1;
 			lm.InitEntity(newle);
-
 		}
+
+		MPI_Barrier(MPI_COMM_WORLD);
+		int exist_host[64] = { 0 };
+		MPI_Gather(&exist, 1, MPI_INT, exist_host, 1, MPI_INT, host, MPI_COMM_WORLD);
+
 		if (rank == host) {
+			exist = 0;
+			for (int i = 0; i != size; i++) {
+				exist += exist_host[i];
+				// TODO: 给host中颗粒副本加入标识以便通信
+			}
 			le.push_back(newle);
 		}
 	}
 
 	fin.close();
 	MPI_Barrier(MPI_COMM_WORLD);
+}
+
+void LatticeSolver::StartOrder()
+{
+	int buf = 1;
+	MPI_Status status;
+	if (rank == host) {
+		//MPI_Send(&buf, 1, MPI_INT, rank + 1, rank, MPI_COMM_WORLD);
+	}
+	else if (rank != size - 1) {
+		MPI_Recv(&buf, 1, MPI_INT, rank - 1, rank - 1, MPI_COMM_WORLD, &status);
+		//MPI_Send(&buf, 1, MPI_INT, rank + 1, rank, MPI_COMM_WORLD);
+	}
+	else if (rank == size - 1) {
+		MPI_Recv(&buf, 1, MPI_INT, rank - 1, rank - 1, MPI_COMM_WORLD, &status);
+	}
+}
+
+void LatticeSolver::EndOrder()
+{
+	int buf = 1;
+	MPI_Status status;
+	if (rank == host) {
+		MPI_Send(&buf, 1, MPI_INT, rank + 1, rank, MPI_COMM_WORLD);
+	}
+	else if (rank != size - 1) {
+		//MPI_Recv(&buf, 1, MPI_INT, rank - 1, rank - 1, MPI_COMM_WORLD, &status);
+		MPI_Send(&buf, 1, MPI_INT, rank + 1, rank, MPI_COMM_WORLD);
+	}
+	else if (rank == size - 1) {
+		//MPI_Recv(&buf, 1, MPI_INT, rank - 1, rank - 1, MPI_COMM_WORLD, &status);
+	}
 }
 
 LatticeSolver::LatticeSolver()
@@ -139,11 +182,36 @@ LatticeSolver::LatticeSolver()
 	InitParameter();
 
 	/* lattice units initialization */
+	lm.Init(rank*ni, 0, ni, nj);
+
 	// fluid-boundaries
 	InitBoundary();
 
 	// entities (particles)
 	InitEntity();
+}
+
+void LatticeSolver::Calculate()
+{
+	lm.Force();
+}
+
+void LatticeSolver::PrintInfo()
+{
+	if (rank == host) {
+		cout << "======================================\n";
+		cout << "= LBSolver-Parallel                  =\n";
+		cout << "======================================\n";
+		cout << "= grid                               =\n";
+		cout << "= ---------------------------------- =\n";
+		cout << "=\tnx : " << setw(5) << nx << " |" << setw(5) << di << " | " << setw(5) << ni << "    =\n";
+		cout << "=\tny : " << setw(5) << ny << " |" << setw(5) << dj << " | " << setw(5) << nj << "    =\n";
+		cout << "= ---------------------------------- =\n";
+		cout << "= number of entities :    " << setw(7) << nle << "    =\n";
+		cout << "= number of boundaries :  " << setw(7) << nlb << "    =\n";
+		cout << "======================================\n";
+	}
+	MPI_Barrier(MPI_COMM_WORLD);
 }
 
 void LatticeSolver::WriteUnit()
@@ -170,7 +238,7 @@ void LatticeSolver::WriteUnit()
 		// header
 		fout << "TITLE     = Particles" << endl;
 		fout << "FILETYPE  = FULL" << endl;
-		fout << "VARIABLES = xp yp up vp" << endl;
+		fout << "VARIABLES = x y up vp" << endl;
 		fout << "ZONE    F = point" << endl;
 		fout << "        I = " << nm << endl;
 		fout << "SOLUTIONTIME = " << step << endl;
@@ -185,5 +253,15 @@ void LatticeSolver::WriteUnit()
 
 		fout.close();
 	}
+}
+
+void LatticeSolver::WriteFlow()
+{
+	string fname = "out/flow_" + to_string(rank) + "_" + to_string(step) + ".dat";
+	fout.open(fname);
+
+	lm.WriteAscii(fout, step);
+
+	fout.close();
 }
 

@@ -11,5 +11,11 @@ int main()
 
 	LatticeSolver ls;
 
+	ls.PrintInfo();
+
+	ls.Calculate();
+	ls.WriteFlow();
+	ls.WriteUnit();
+
 	MPI_Finalize();
 }

@@ -7,6 +7,7 @@
 #include<algorithm>
 #include<vector>
 #include<string>
+#include<iomanip>
 
 #include"LatticeBound.h"
 #include"LatticeEntity.h"
@@ -64,13 +65,18 @@ class LatticeSolver
 	void InitBoundary();
 	void InitEntity();
 
-	
+	void StartOrder();
+	void EndOrder();
 
 public:
 	/* constructor */
 	LatticeSolver();
 
 	/* control functions */
+	void Calculate();
+
+	void PrintInfo();
+
 	void WriteUnit();
 	void WriteFlow();
 

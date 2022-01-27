@@ -12,9 +12,6 @@ class LatticeEntity
 {
 	const double pi = 3.1415926535897932;
 
-	/* index */
-	int index_global;
-
 	/* geometry */
 	double r;
 
@@ -27,12 +24,19 @@ class LatticeEntity
 	/* marker */
 	int nm;
 	double dphi;
-	double* xm, *ym, *uxm, *uym;
+	double* xm, *ym, *uxm, *uym, *uxf, *uyf;
 
 	/* internal functions */
-	inline bool IsExist(int im);
+	double FuncD(double r);
 
 public:
+
+	/* index */
+	int index_global;
+	int num_rank;
+	int rank[64] = { 0 };
+
+
 	/* constructor & destructor */
 	LatticeEntity(int index_global, double r, double xg, double yg, double phi, \
 		double xs, double xe, double ys, double ye, \
@@ -42,6 +46,13 @@ public:
 
 	/* functions */
 	bool IsExist();
+	inline bool IsExist(int im);
+
+	void CalculateU(int im, double i, double j, double u, double v);
+	double CalculateFx(int im, double rho);
+	double CalculateFy(int im, double rho);
+
+	void Reset();
 
 	int get_nm();
 	double get_xm(int im);

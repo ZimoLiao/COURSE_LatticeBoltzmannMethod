@@ -31,4 +31,4 @@
     number of particles
     1
     r       x       y       phi     ux0     uy0     uphi0
-    10.0    20.0    20.0    0.0     0.0     0.0     0.0
+    8.0    16.3    20.0    0.0     0.1     -0.02     0.0
