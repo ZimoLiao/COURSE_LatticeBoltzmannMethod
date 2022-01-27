@@ -18,40 +18,16 @@
     <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LatticeSolver.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="LatticePopulation.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="LatticeMoment.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="LatticeBound.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="LatticeEntity.cpp">
+    <ClCompile Include="LatticeBlock.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LatticeSolver.h">
+    <ClInclude Include="LatticeBlock.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="LatticePopulation.h">
+    <ClInclude Include="Head.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="LatticeMoment.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="LatticeBound.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="LatticeEntity.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
