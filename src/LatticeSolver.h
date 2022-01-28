@@ -15,15 +15,27 @@ using namespace std;
 class LatticeSolver
 {
 	/* parameters */
+	const int host = 0;
 	int rank, size;
 
 	// geometry (grid)
-	int nx, ny, tg[5] = { 0,1,1,1,1 };
+	int nx, ny, tg[5] = { 0 };
 	int ni, nj;
 
 	// simulation
 	int nforce = 5;
-	int nstep = 0;
+	int nstep = 0, nwrite = 0;
+
+	// model
+	bool is_srt = false, is_mrt = false;
+	double tau = 0.8;
+
+	// boundary counter
+	int nlb_total = 0;
+
+
+	/* internal functions */
+	void Ignore(ifstream& fin, int l);
 
 public:
 	/* data */

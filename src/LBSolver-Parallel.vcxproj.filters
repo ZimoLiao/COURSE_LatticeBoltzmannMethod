@@ -36,6 +36,9 @@
     <ClCompile Include="ParticleSolver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Main_backup.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LatticeBlock.h">
