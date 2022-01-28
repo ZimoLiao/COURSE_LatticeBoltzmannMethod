@@ -1,13 +1,23 @@
 #ifndef LATTICEMOMENT_H_
 #define LATTICEMOMENT_H_
 
+<<<<<<< HEAD
 #include<vector>
 #include<fstream>
 #include<math.h>
 
 #include"LatticeEntity.h"
-#include"LatticePopulation.h"
+=======
+#include<string>
+#include<fstream>
+#include<iomanip>
 
+#include"LatticeBlock.h"
+>>>>>>> new
+#include"LatticePopulation.h"
+#include"ImmersedParticle.h"
+
+<<<<<<< HEAD
 using std::vector;
 using std::ofstream;
 using std::max;
@@ -28,6 +38,17 @@ class LatticeMoment
 	// moments array
 	double* data;
 	double diff = 1.0;
+=======
+using std::string;
+
+constexpr double pi = 3.1415926535897932;
+
+class LatticeMoment :
+	public LatticeBlock<3, 3>
+{
+
+
+>>>>>>> new
 
 	// entities (solid particles)
 	int nle;
@@ -43,7 +64,9 @@ class LatticeMoment
 
 public:
 	friend class LatticePopulation;
+	friend class ImmersedParticle;
 
+<<<<<<< HEAD
 	/* constructor & destructor */
 	LatticeMoment();
 	~LatticeMoment();
@@ -58,13 +81,32 @@ public:
 
 	void InitEntity(LatticeEntity newle);
 
+=======
+
+	/* monitors */
+	double diff = 1.0;
+
+
+	/* initialization */
+	void InitData();
+
+	// TODO: just for test
+	void InitDataShear();
+	// TODO: need delete
+
+>>>>>>> new
 
 	/* functions */
 	void Update(LatticePopulation& lp);
 
+<<<<<<< HEAD
 	void Force();
 
 	void WriteAscii(ofstream& fout, int step);
+=======
+	void WriteAscii(int step);
+
+>>>>>>> new
 };
 
 

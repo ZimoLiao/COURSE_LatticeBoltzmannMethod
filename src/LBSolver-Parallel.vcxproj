@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugSerial|Win32">
+      <Configuration>DebugSerial</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugSerial|x64">
+      <Configuration>DebugSerial</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -19,12 +27,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="LatticeBound.cpp" />
     <ClCompile Include="LatticeEntity.cpp" />
+=======
+    <ClCompile Include="ImmersedParticle.cpp" />
+    <ClCompile Include="LatticeBound.cpp" />
+>>>>>>> new
     <ClCompile Include="LatticeMoment.cpp" />
     <ClCompile Include="LatticePopulation.cpp" />
     <ClCompile Include="LatticeSolver.cpp" />
     <ClCompile Include="Main.cpp" />
+<<<<<<< HEAD
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LatticeBound.h" />
@@ -35,6 +49,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+=======
+    <ClCompile Include="Main_backup.cpp" />
+    <ClCompile Include="ParticleSolver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImmersedParticle.h" />
+    <ClInclude Include="LatticeBlock.h" />
+    <ClInclude Include="LatticeBound.h" />
+    <ClInclude Include="LatticeMoment.h" />
+    <ClInclude Include="LatticePopulation.h" />
+    <ClInclude Include="LatticeSolver.h" />
+    <ClInclude Include="ParticleSolver.h" />
+>>>>>>> new
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -69,6 +96,12 @@
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='DebugSerial|Win32'">
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='DebugSerial|x64'">
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

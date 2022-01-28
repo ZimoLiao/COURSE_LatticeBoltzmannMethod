@@ -1,14 +1,22 @@
 #ifndef LATTICEPOPULATION_H_
 #define LATTICEPOPULATION_H_
 
+<<<<<<< HEAD
 #include<mpi.h>
 #include<vector>
 #include<iostream>
 
 #include"LatticeBound.h"
+=======
+#include<vector>
+
+#include"LatticeBlock.h"
+>>>>>>> new
 #include"LatticeMoment.h"
+#include"LatticeBound.h"
 
 using std::vector;
+<<<<<<< HEAD
 using std::cin;
 using std::cout;
 using std::endl;
@@ -53,10 +61,23 @@ class LatticePopulation
 	inline int Index(int i, int j);
 
 	void CalculateFeq(double* f, double* m);
+=======
+
+class LatticePopulation :
+	public LatticeBlock<9, 1>
+{
+
+	/* data */
+	// fluid-boundaries
+	int nlb = 0;
+	vector<LatticeBound> lb;
+
+>>>>>>> new
 
 public:
 	friend class LatticeMoment;
 
+<<<<<<< HEAD
 	/* constructor & destructor */
 	LatticePopulation();
 	LatticePopulation(LatticeMoment& lm);
@@ -76,6 +97,20 @@ public:
 
 
 	/* functions */
+=======
+
+	/* initialization */
+	void InitData(LatticeMoment& lm);
+
+	void InitBoundary(LatticeBound& newlb);
+
+
+
+	/* functions */
+	void Stream();
+	void Boundary();
+	void CollideSrt(LatticeMoment& lm);
+>>>>>>> new
 
 };
 

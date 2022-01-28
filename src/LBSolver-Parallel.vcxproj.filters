@@ -18,12 +18,17 @@
     <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="LatticeSolver.cpp">
+=======
+    <ClCompile Include="LatticePopulation.cpp">
+>>>>>>> new
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="LatticeMoment.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="LatticePopulation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -50,8 +55,45 @@
     <ClInclude Include="LatticeEntity.h">
       <Filter>头文件</Filter>
     </ClInclude>
+=======
+    <ClCompile Include="LatticeBound.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ImmersedParticle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LatticeSolver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSolver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Main_backup.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
+>>>>>>> new
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClInclude Include="LatticeBlock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticePopulation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticeMoment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticeBound.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ImmersedParticle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LatticeSolver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSolver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 #include "LatticeBound.h"
 
+<<<<<<< HEAD
 LatticeBound::LatticeBound(int index_global, int type, int direct, int is, int ie, int js, int je, double rho, double u, double v)
 {
 	this->index_global = index_global;
@@ -27,6 +28,39 @@ bool LatticeBound::IsExist(int rank, int ni)
 	int isr = ni * rank, ier = (ni + 1)*rank - 1;
 
 	return !(is > ier || ie < isr);
+=======
+LatticeBound::LatticeBound(int rank, int ni, int nj, \
+	int type, int direct, \
+	int istart, int iend, int jstart, int jend, \
+	double rho, double u, double v)
+{
+	imin = rank * ni;
+	imax = (rank + 1)*ni - 1;
+	jmin = 0;
+	jmax = nj;
+
+	this->type = type;
+	this->direct = direct;
+	this->istart = istart;
+	this->iend = iend;
+	this->jstart = jstart;
+	this->jend = jend;
+	this->rho = rho;
+	this->u = u;
+	this->v = v;
+
+	exist = !(jend<jmin || iend<imin || jstart>jmax || istart>imax);
+
+	this->istart = max(istart, imin) % ni;
+	this->iend = min(iend, imax) % ni;
+	this->jstart = max(jstart, jmin) % nj;
+	this->jend = min(jend, jmax) % nj;
+}
+
+bool LatticeBound::IsExist()
+{
+	return exist;
+>>>>>>> new
 }
 
 void LatticeBound::CalculateNebb0(double * f)
@@ -84,6 +118,64 @@ void LatticeBound::CalculateNebb0(double * f)
 	}
 }
 
+<<<<<<< HEAD
+=======
+void LatticeBound::CalculateNebb0(double * f, double rho_ref)
+{
+	switch (direct)
+	{
+	case 1:
+		f[1] = f[3];
+		f[5] = f[7] - 0.5*(f[2] - f[4]);
+		f[8] = f[6] + 0.5*(f[2] - f[4]);
+		break;
+	case 3:
+		f[3] = f[1];
+		f[6] = f[8] - 0.5*(f[2] - f[4]);
+		f[7] = f[5] + 0.5*(f[2] - f[4]);
+		break;
+	case 2:
+		f[2] = f[4];
+		f[5] = f[7] - 0.5*(f[1] - f[3]);
+		f[6] = f[8] + 0.5*(f[1] - f[3]);
+		break;
+	case 4:
+		f[4] = f[2];
+		f[8] = f[6] - 0.5*(f[1] - f[3]);
+		f[7] = f[5] + 0.5*(f[1] - f[3]);
+		break;
+	case 5:
+		f[1] = f[3];
+		f[2] = f[4];
+		f[5] = f[7];
+		f[6] = 0.5*(rho_ref - f[0] - 2.0*(f[3] + f[4] + f[7]));
+		f[8] = f[6];
+		break;
+	case 6:
+		f[3] = f[1];
+		f[2] = f[4];
+		f[6] = f[8];
+		f[5] = 0.5*(rho_ref - f[0] - 2.0*(f[1] + f[4] + f[8]));
+		f[7] = f[5];
+		break;
+	case 7:
+		f[3] = f[1];
+		f[4] = f[2];
+		f[7] = f[5];
+		f[6] = 0.5*(rho_ref - f[0] - 2.0*(f[1] + f[2] + f[5]));
+		f[8] = f[6];
+		break;
+	case 8:
+		f[1] = f[3];
+		f[4] = f[2];
+		f[8] = f[6];
+		f[5] = 0.5*(rho_ref - f[0] - 2.0*(f[2] + f[3] + f[6]));
+		f[7] = f[5];
+		break;
+	}
+}
+
+>>>>>>> new
 void LatticeBound::CalculateNebbV(double * f)
 {
 	switch (direct)
@@ -154,3 +246,31 @@ void LatticeBound::CalculateNebbP(double * f)
 		break;
 	}
 }
+<<<<<<< HEAD
+=======
+
+int LatticeBound::GetType()
+{
+	return type;
+}
+
+int LatticeBound::GetIs()
+{
+	return istart;
+}
+
+int LatticeBound::GetIe()
+{
+	return iend;
+}
+
+int LatticeBound::GetJs()
+{
+	return jstart;
+}
+
+int LatticeBound::GetJe()
+{
+	return jend;
+}
+>>>>>>> new
