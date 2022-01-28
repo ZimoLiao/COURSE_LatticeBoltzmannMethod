@@ -1,14 +1,38 @@
 #ifndef LATTICEPOPULATION_H_
 #define LATTICEPOPULATION_H_
 
-#include "LatticeBlock.h"
+#include<vector>
+
+#include"LatticeBlock.h"
+#include"LatticeMoment.h"
+#include"LatticeBound.h"
+
+using std::vector;
+
 class LatticePopulation :
-	public LatticeBlock
+	public LatticeBlock<9, 1>
 {
-	const int nvar = 9;
-	const int ngconn = 1;
+
+	/* data */
+	// fluid-boundaries
+	int nlb = 0;
+	vector<LatticeBound> lb;
+
 
 public:
+	friend class LatticeMoment;
+
+
+	/* initialization */
+	void InitData(LatticeMoment& lm);
+
+	void InitBoundary(LatticeBound& newlb);
+
+
+	/* functions */
+	void Stream();
+	void Boundary();
+	void CollideSrt(LatticeMoment& lm);
 
 };
 

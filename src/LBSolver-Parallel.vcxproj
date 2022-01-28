@@ -27,15 +27,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LatticeBlock.cpp" />
+    <ClCompile Include="ImmersedParticle.cpp" />
+    <ClCompile Include="LatticeBound.cpp" />
     <ClCompile Include="LatticeMoment.cpp" />
     <ClCompile Include="LatticePopulation.cpp" />
+    <ClCompile Include="LatticeSolver.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ParticleSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImmersedParticle.h" />
     <ClInclude Include="LatticeBlock.h" />
+    <ClInclude Include="LatticeBound.h" />
     <ClInclude Include="LatticeMoment.h" />
     <ClInclude Include="LatticePopulation.h" />
+    <ClInclude Include="LatticeSolver.h" />
+    <ClInclude Include="ParticleSolver.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
