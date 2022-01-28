@@ -2,7 +2,7 @@
 
 ## Simulation
     nstep   nwrite
-    10000   200
+    10000   500
 
 ## Geometry parameters
 ### grid size
@@ -10,7 +10,7 @@
     882     165
 ### partition (x-direction only)
     di      dj
-    3       1
+    2       1
 ### boundary type (-n:nth-order extrapolation; 0:do nothing; 1:connection)
     b1      b2      b3      b4
     0       0       0       0 
@@ -18,7 +18,7 @@
 ## Physics parameters
 ### collision operators
     is_srt  tau
-    1       0.56
+    1       0.8
     is_mrt  omega_e     omega_ep    omeag_q     omega_nu
     0       0.4         1.0         1.0         1.6
 
@@ -29,9 +29,9 @@
     type    direct  is      ie      js      je      rho         u           v
     1       2       1       -2      0       0       0.0         0.0         0.0
     1       4       1       -2      -1      -1      0.0         0.0         0.0
-    3       3       -1      -1      1       -2      0.998       0.0         0.0
-    3       1       0       0       1       -2      1.002       0.0         0.0
-    1       7       -1      -1      -1      -1      0.998       0.0         0.0
-    1       8       0       0       -1      -1      1.002       0.0         0.0
-    1       5       0       0       0       0       1.002       0.0         0.0
-    1       6       -1      -1      0       0       0.998       0.0         0.0
+    3       3       -1      -1      1       -2      0.99607     0.0         0.0
+    3       1       0       0       1       -2      1.00393     0.0         0.0
+    1       7       -1      -1      -1      -1      0.99607     0.0         0.0
+    1       8       0       0       -1      -1      1.00393     0.0         0.0
+    1       5       0       0       0       0       1.00393     0.0         0.0
+    1       6       -1      -1      0       0       0.99607     0.0         0.0

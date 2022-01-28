@@ -41,7 +41,7 @@ ImmersedParticle::ImmersedParticle(\
 	ymax = nj + 1.0;
 
 	/* markers initialization */
-	nm = ceil(2.0*pi*r);
+	nm = ceil(2.0*pi*r) + 5;
 	dphi = 2.0*pi / double(nm);
 
 	// allocation

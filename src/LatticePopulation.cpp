@@ -86,7 +86,28 @@ void LatticePopulation::Boundary()
 		case 1: // NEBB-0
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
+
 					lb[b].CalculateNebb0(&data[Index(i, j)]);
+
+					// corner: set reference density
+					if (i == 0 || i == ni - 1) {
+						if (j == 0) {
+							double rho_ref = 0.0;
+							int ind = Index(i, 1);
+							for (int a = 0; a != 9; a++) {
+								rho_ref += data[ind + a];
+							}
+							lb[b].CalculateNebb0(&data[Index(i, j)], rho_ref);
+						}
+						else if (j == nj - 1) {
+							double rho_ref = 0.0;
+							int ind = Index(i, nj - 2);
+							for (int a = 0; a != 9; a++) {
+								rho_ref += data[ind + a];
+							}
+							lb[b].CalculateNebb0(&data[Index(i, j)], rho_ref);
+						}
+					}
 				}
 			}
 			break;

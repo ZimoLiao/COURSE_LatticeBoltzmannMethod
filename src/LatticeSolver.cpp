@@ -90,12 +90,14 @@ void LatticeSolver::Calculate()
 	double diff_rank[128] = { 0.0 };
 	for (int i = 0; i != nstep; i++) {
 
-		for (int ip = 0; ip != psolver.npart; ip++) {
-			for (int iforce = 0; iforce != psolver.nforce; iforce++) {
-				if (psolver.part[ip].IsExist()) {
-					psolver.part[ip].ForceMoment(lm);
+		if (psolver.npart != 0) {
+			for (int ip = 0; ip != psolver.npart; ip++) {
+				for (int iforce = 0; iforce != psolver.nforce; iforce++) {
+					if (psolver.part[ip].IsExist()) {
+						psolver.part[ip].ForceMoment(lm);
+					}
+					lm.UpdateGhost();
 				}
-				lm.UpdateGhost();
 			}
 		}
 
