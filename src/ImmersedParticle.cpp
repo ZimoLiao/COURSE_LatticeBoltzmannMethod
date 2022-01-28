@@ -75,6 +75,51 @@ ImmersedParticle::ImmersedParticle(\
 	}
 }
 
+ImmersedParticle::ImmersedParticle(const ImmersedParticle & newpart)
+{
+	this->r = newpart.r;
+	this->x = newpart.x;
+	this->y = newpart.y;
+	this->phi = newpart.phi;
+	this->ux = newpart.ux;
+	this->uy = newpart.uy;
+	this->uphi = newpart.uphi;
+
+	xmin = newpart.xmin;
+	ymin = newpart.ymin;
+	xmax = newpart.xmax;
+	ymax = newpart.ymax;
+
+	/* markers initialization */
+	nm = newpart.nm;
+	dphi = newpart.dphi;
+
+	// allocation
+	mx = new double[nm];
+	my = new double[nm];
+	mux = new double[nm];
+	muy = new double[nm];
+	mufx = new double[nm];
+	mufy = new double[nm];
+	mFx = new double[nm];
+	mFy = new double[nm];
+	mexist = new bool[nm];
+
+	// value calculation
+	exist = newpart.exist;
+	for (int i = 0; i != nm; i++) {
+		mx[i] = newpart.mx[i];
+		my[i] = newpart.my[i];
+		mux[i] = newpart.mux[i];
+		muy[i] = newpart.muy[i];
+		mufx[i] = newpart.mufx[i];
+		mufy[i] = newpart.mufy[i];
+		mFx[i] = newpart.mFx[i];
+		mFy[i] = newpart.mFy[i];
+		mexist[i] = newpart.mexist[i];
+	}
+}
+
 ImmersedParticle::~ImmersedParticle()
 {
 	delete[] mx;
@@ -97,6 +142,7 @@ void ImmersedParticle::ForceMoment(LatticeMoment & lm)
 {
 	/* update unforced velocity */
 	int istart, iend, jstart, jend;
+
 	for (int im = 0; im != nm; im++) {
 		mufx[im] = 0.;
 		mufy[im] = 0.;
@@ -151,9 +197,6 @@ void ImmersedParticle::ForceMoment(LatticeMoment & lm)
 
 		}
 	}
-
-	/* update moment ghost layers */
-	lm.UpdateGhost();
 }
 
 double ImmersedParticle::Interpolation(int im, LatticeMoment& lm)

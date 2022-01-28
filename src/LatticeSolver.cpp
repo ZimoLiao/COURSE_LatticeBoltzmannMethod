@@ -48,11 +48,12 @@ LatticeSolver::LatticeSolver()
 	/* moment & population initialization */
 	lm.InitGeom(rank*ni, 0, ni, nj, tg);
 	lm.InitData();
+	lm.UpdateGhost();
 
 	lp.InitGeom(rank*ni, 0, ni, nj, tg);
 	lp.InitData(lm);
 	lp.InitParam(tau);
-
+	lp.UpdateGhost();
 
 	/* read fluid-boundaries */
 	int type, direct, is, ie, js, je;
@@ -75,4 +76,64 @@ LatticeSolver::LatticeSolver()
 	}
 
 	fin.close();
+
+	psolver.Init(rank, ni, nj);
+}
+
+void LatticeSolver::Calculate()
+{
+	clock_t start, end;
+	if (rank == host) { // TODO: 优化计时器
+		start = clock();
+	}
+
+	double diff_rank[128] = { 0.0 };
+	for (int i = 0; i != nstep; i++) {
+
+		for (int ip = 0; ip != psolver.npart; ip++) {
+			for (int iforce = 0; iforce != psolver.nforce; iforce++) {
+				if (psolver.part[ip].IsExist()) {
+					psolver.part[ip].ForceMoment(lm);
+				}
+				lm.UpdateGhost();
+			}
+		}
+
+		lp.CollideSrt(lm);
+		lp.UpdateGhost();
+		lp.Stream();
+		lp.Boundary();
+		lm.Update(lp);
+
+		step++;
+
+		// calculate iteration difference (velocity)
+		double buf = lm.diff;
+		MPI_Gather(&buf, 1, MPI_DOUBLE, diff_rank, 1, MPI_DOUBLE, host, MPI_COMM_WORLD);
+		if (rank == host) {
+			diff = 0.0;
+			for (int i = 0; i != size; i++) {
+				diff += diff_rank[i];
+			}
+		}
+		MPI_Barrier(MPI_COMM_WORLD);
+
+		if (rank == host) {
+			cout << "step " << setw(8) << step << "\t diff " << diff << endl;
+		}
+
+		// write file
+		if (step%nwrite == 0) {
+			if (rank == host) {
+				cout << "write to file.\n";
+			}
+			lm.WriteAscii(step);
+			MPI_Barrier(MPI_COMM_WORLD);
+		}
+	}
+
+	if (rank == host) {
+		end = clock();
+		cout << "time = " << double(end - start) / CLOCKS_PER_SEC << "s" << endl;
+	}
 }

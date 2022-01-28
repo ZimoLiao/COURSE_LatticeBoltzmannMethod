@@ -371,7 +371,6 @@ void LatticeBlock<NV, NG>::UpdateGhost()
 		}
 	}
 
-
 	/* left and right sides */
 	// extrapolation boundary
 	if (tg[1] < 0) {
@@ -405,7 +404,7 @@ void LatticeBlock<NV, NG>::UpdateGhost()
 				UnpackBuffer(recv, 1);
 
 #ifdef _DEBUG
-				cout << "message-passing between " << mpi_rank << " and " << rank1 << endl;
+				//cout << "message-passing between " << mpi_rank << " and " << rank1 << endl;
 #endif // _DEBUG
 			}
 
@@ -434,7 +433,7 @@ void LatticeBlock<NV, NG>::UpdateGhost()
 				UnpackBuffer(recv, 1);
 
 #ifdef _DEBUG
-				cout << "message-passing between " << mpi_rank << " and " << rank1 << endl;
+				//cout << "message-passing between " << mpi_rank << " and " << rank1 << endl;
 #endif // _DEBUG
 			}
 		}

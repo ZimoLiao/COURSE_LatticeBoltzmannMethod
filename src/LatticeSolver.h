@@ -5,10 +5,13 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<iomanip>
+#include<time.h>
 
 #include"LatticeBound.h"
 #include"LatticeMoment.h"
 #include"LatticePopulation.h"
+#include"ParticleSolver.h"
 
 using namespace std;
 
@@ -23,7 +26,7 @@ class LatticeSolver
 	int ni, nj;
 
 	// simulation
-	int nforce = 5;
+	int nforce = 1;
 	int nstep = 0, nwrite = 0;
 
 	// model
@@ -32,6 +35,10 @@ class LatticeSolver
 
 	// boundary counter
 	int nlb_total = 0;
+
+
+	/* particle solver */
+	ParticleSolver psolver;
 
 
 	/* internal functions */
@@ -43,8 +50,15 @@ public:
 	LatticePopulation lp;
 
 
+	/* monitor (global) */
+	int step = 0;
+	double diff;
+
 	/* constructor */
 	LatticeSolver();
+
+	/* functions */
+	void Calculate();
 
 };
 

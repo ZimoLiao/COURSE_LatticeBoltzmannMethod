@@ -83,21 +83,21 @@ void LatticePopulation::Boundary()
 	for (int b = 0; b != nlb; b++) {
 		switch (lb[b].GetType())
 		{
-		case 0: // NEBB-0
+		case 1: // NEBB-0
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
 					lb[b].CalculateNebb0(&data[Index(i, j)]);
 				}
 			}
 			break;
-		case 1: // NEBB-V
+		case 2: // NEBB-V
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
 					lb[b].CalculateNebbV(&data[Index(i, j)]);
 				}
 			}
 			break;
-		case 2: // NEBB-P
+		case 3: // NEBB-P
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
 					lb[b].CalculateNebbP(&data[Index(i, j)]);

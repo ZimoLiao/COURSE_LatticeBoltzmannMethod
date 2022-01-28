@@ -1,32 +1,11 @@
-### INPUT FILE FOR LBSOLVER-PARALLEL
-## GEOMETRY
-# grid
-Nx      Ny
-48      32
-# domain decomposition
-Dx      Dy
-3       1
-# boundary types
-1   2   3   4   5   6   7   8
--1   -1   -1   -1   -1   -1   -1   -1
+# Solid particles setup of LBSolver-Parallel (D2Q9)
 
-## MODEL (D2Q9)
-# collision operators and corresponding relaxation times
-[SRT]   tau
-1       0.8
-[MRT]   omega_e     omega_ep    omega_q     omega_nu   
-0       0.75         0.5        1.2         1.25
+## Settings
+    nforce
+    5
 
-## UNITS
-# fluid boundary 
-number of fluid boundaries
-8
-type    direct  istart  iend    jstart  jend    rho     u       v
-0       2       1       47      0       1       1.0     0.0     0.0
-0       4       1       47      31      32      1.0     0.0     0.0
-2       1       0       1       1       31      1.005868887   0.0     0.0
-0       5       0       1       0       1       1.005868887   0.0     0.0
-0       8       0       1       31      32      1.005868887   0.0     0.0
-0       6       47      48      0       1       0.994131113   0.0     0.0
-0       7       47      48      31      32      0.994131113   0.0     0.0
-2       3       47      48      1       31      0.994131113   0.0     0.0
+## Particels
+    npart
+    1
+    r       x0      y0      phi0    ux0     uy0     uphi0
+    20.0    80.0    80.0    0.0     0.0     0.0     0.0

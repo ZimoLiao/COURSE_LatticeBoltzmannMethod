@@ -23,7 +23,7 @@ int main()
 
 	LatticeSolver ls;
 
-
+	ls.Calculate();
 
 	MPI_Finalize();
 	return 0;

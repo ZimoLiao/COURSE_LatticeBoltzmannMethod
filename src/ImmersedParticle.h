@@ -44,6 +44,7 @@ public:
 		double x0, double y0, double ni, double nj, double r, \
 		double gx, double gy, double gphi, \
 		double ux, double uy, double uphi);
+	ImmersedParticle(const ImmersedParticle& newpart);
 	~ImmersedParticle();
 
 

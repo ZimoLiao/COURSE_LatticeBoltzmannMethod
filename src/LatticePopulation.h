@@ -29,6 +29,7 @@ public:
 	void InitBoundary(LatticeBound& newlb);
 
 
+
 	/* functions */
 	void Stream();
 	void Boundary();

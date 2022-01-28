@@ -78,6 +78,7 @@ int main_backup()
 
 		for (int i = 0; i != nforce; i++) {
 			part.ForceMoment(lm);
+			lm.UpdateGhost();
 		}
 
 		lp.CollideSrt(lm);
