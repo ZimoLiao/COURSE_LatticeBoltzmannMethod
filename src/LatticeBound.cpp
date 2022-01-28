@@ -1,34 +1,5 @@
 #include "LatticeBound.h"
 
-<<<<<<< HEAD
-LatticeBound::LatticeBound(int index_global, int type, int direct, int is, int ie, int js, int je, double rho, double u, double v)
-{
-	this->index_global = index_global;
-	this->type = type;
-	this->direct = direct;
-	this->is = is;
-	this->ie = ie;
-	this->js = js;
-	this->je = je;
-
-	this->rho = rho;
-	this->u = u;
-	this->v = v;
-}
-
-void LatticeBound::UpdateLocal(int rank, int ni)
-{
-	int isr = ni * rank, ier = (ni + 1)*rank - 1;
-	is = std::max(is, isr);
-	ie = std::max(ie, ier);
-}
-
-bool LatticeBound::IsExist(int rank, int ni)
-{
-	int isr = ni * rank, ier = (ni + 1)*rank - 1;
-
-	return !(is > ier || ie < isr);
-=======
 LatticeBound::LatticeBound(int rank, int ni, int nj, \
 	int type, int direct, \
 	int istart, int iend, int jstart, int jend, \
@@ -60,7 +31,6 @@ LatticeBound::LatticeBound(int rank, int ni, int nj, \
 bool LatticeBound::IsExist()
 {
 	return exist;
->>>>>>> new
 }
 
 void LatticeBound::CalculateNebb0(double * f)
@@ -118,8 +88,6 @@ void LatticeBound::CalculateNebb0(double * f)
 	}
 }
 
-<<<<<<< HEAD
-=======
 void LatticeBound::CalculateNebb0(double * f, double rho_ref)
 {
 	switch (direct)
@@ -175,7 +143,6 @@ void LatticeBound::CalculateNebb0(double * f, double rho_ref)
 	}
 }
 
->>>>>>> new
 void LatticeBound::CalculateNebbV(double * f)
 {
 	switch (direct)
@@ -246,8 +213,6 @@ void LatticeBound::CalculateNebbP(double * f)
 		break;
 	}
 }
-<<<<<<< HEAD
-=======
 
 int LatticeBound::GetType()
 {
@@ -273,4 +238,3 @@ int LatticeBound::GetJe()
 {
 	return jend;
 }
->>>>>>> new

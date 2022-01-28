@@ -1,25 +1,4 @@
 #include<mpi.h>
-<<<<<<< HEAD
-#include<iostream>
-
-#include"LatticeSolver.h"
-
-using namespace std;
-
-int main()
-{
-	MPI_Init(NULL,NULL);
-
-	LatticeSolver ls;
-
-	ls.PrintInfo();
-
-	ls.Calculate();
-	ls.WriteFlow();
-	ls.WriteUnit();
-
-	MPI_Finalize();
-=======
 #include<string>
 
 #include"LatticePopulation.h"
@@ -48,5 +27,4 @@ int main()
 
 	MPI_Finalize();
 	return 0;
->>>>>>> new
 }
