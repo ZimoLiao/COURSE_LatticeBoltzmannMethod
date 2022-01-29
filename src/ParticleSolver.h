@@ -5,13 +5,25 @@
 #include<string>
 
 #include"ImmersedParticle.h"
+#include"LatticeMoment.h"
 
 using namespace std;
 
 class ParticleSolver
 {
-	int rank;
+	const int host = 0;
+
+	int rank, size;
 	int ni, nj;
+
+	int step = 0;
+	double* Force;
+	double* buffer_host;
+
+
+	/* file stream (write force) */
+	ofstream fout;
+
 
 	/* internal functions */
 	void Ignore(ifstream& fin, int l);
@@ -23,9 +35,15 @@ public:
 
 	/* constructor */
 	ParticleSolver();
+	~ParticleSolver();
 
 
 	void Init(int rank, int ni, int nj);
+
+	void Calculate(LatticeMoment& lm);
+
+	void UpdateForce();
+
 
 };
 

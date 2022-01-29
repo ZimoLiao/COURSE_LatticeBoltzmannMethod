@@ -22,11 +22,11 @@ class ImmersedParticle
 	// variables in local coordinate
 	double x, y, phi, ux, uy, uphi;
 	bool exist;
-	double* mx, *my, *mux, *muy;
+	double* mx, * my, * mux, * muy;
 	bool* mexist;
 
 	// unforced velocity & force at markers
-	double* mufx, *mufy, *mFx, *mFy;
+	double* mufx, * mufy, * mFx, * mFy;
 
 
 	/* internal functions */
@@ -38,6 +38,7 @@ class ImmersedParticle
 public:
 	friend class LatticeMoment;
 
+	double Fx = 0.0, Fy = 0.0, M = 0.0;
 
 	/* constructors & destructor */
 	ImmersedParticle(\
@@ -52,8 +53,11 @@ public:
 	bool IsExist();
 
 	void ForceMoment(LatticeMoment& lm);
+	void CalculateTotalForce();
 
 	double Interpolation(int im, LatticeMoment& lm);
+
+	int GetNm();
 };
 
 

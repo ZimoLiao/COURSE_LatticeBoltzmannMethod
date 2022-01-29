@@ -9,17 +9,17 @@ double ImmersedParticle::D(double d)
 {
 	d = abs(d);
 	if (d < 1.0) {
-		return (3. - 2.*d + sqrt(1. + 4.*d - 4.*d*d)) / 8.;
+		return (3. - 2. * d + sqrt(1. + 4. * d - 4. * d * d)) / 8.;
 	}
 	else if (d < 2.0) {
-		return (5. - 2.*d - sqrt(-7. + 12.*d - 4.*d*d)) / 8.;
+		return (5. - 2. * d - sqrt(-7. + 12. * d - 4. * d * d)) / 8.;
 	}
 	return 0.0;
 }
 
 double ImmersedParticle::Delta(int im, double i, double j)
 {
-	return D(mx[im] - i)*D(my[im] - j);
+	return D(mx[im] - i) * D(my[im] - j);
 }
 
 ImmersedParticle::ImmersedParticle(\
@@ -41,8 +41,8 @@ ImmersedParticle::ImmersedParticle(\
 	ymax = nj + 1.0;
 
 	/* markers initialization */
-	nm = ceil(2.0*pi*r) + 5;
-	dphi = 2.0*pi / double(nm);
+	nm = ceil(2.0 * pi * r) + 5;
+	dphi = 2.0 * pi / double(nm);
 
 	// allocation
 	mx = new double[nm];
@@ -63,8 +63,8 @@ ImmersedParticle::ImmersedParticle(\
 
 		mx[i] = x + r * cos(phii);
 		my[i] = y + r * sin(phii);
-		mux[i] = ux - uphi * r*sin(phii);
-		muy[i] = uy + uphi * r*cos(phii);
+		mux[i] = ux - uphi * r * sin(phii);
+		muy[i] = uy + uphi * r * cos(phii);
 		mufx[i] = 0.0;
 		mufy[i] = 0.0;
 		mFx[i] = 0.0;
@@ -75,7 +75,7 @@ ImmersedParticle::ImmersedParticle(\
 	}
 }
 
-ImmersedParticle::ImmersedParticle(const ImmersedParticle & newpart)
+ImmersedParticle::ImmersedParticle(const ImmersedParticle& newpart)
 {
 	this->r = newpart.r;
 	this->x = newpart.x;
@@ -138,7 +138,7 @@ bool ImmersedParticle::IsExist()
 	return exist;
 }
 
-void ImmersedParticle::ForceMoment(LatticeMoment & lm)
+void ImmersedParticle::ForceMoment(LatticeMoment& lm)
 {
 	/* update unforced velocity */
 	int istart, iend, jstart, jend;
@@ -167,6 +167,7 @@ void ImmersedParticle::ForceMoment(LatticeMoment & lm)
 	}
 
 	/* update force and moment */
+
 	for (int im = 0; im != nm; im++) {
 		mFx[im] = 0.;
 		mFy[im] = 0.;
@@ -176,8 +177,8 @@ void ImmersedParticle::ForceMoment(LatticeMoment & lm)
 			// density interpolation
 			double rho = Interpolation(im, lm);
 
-			mFx[im] = 2.0*rho*(mux[im] - mufx[im]);
-			mFy[im] = 2.0*rho*(muy[im] - mufy[im]);
+			mFx[im] = 2.0 * rho * (mux[im] - mufx[im]);
+			mFy[im] = 2.0 * rho * (muy[im] - mufy[im]);
 
 			istart = floor(mx[im]) - 1;
 			jstart = floor(my[im]) - 1;
@@ -199,6 +200,25 @@ void ImmersedParticle::ForceMoment(LatticeMoment & lm)
 	}
 }
 
+void ImmersedParticle::CalculateTotalForce()
+{
+	Fx = 0.0;
+	Fy = 0.0;
+	M = 0.0;
+
+	if (IsExist()) {
+		for (int im = 0; im != nm; im++) {
+			if (mexist[im]) {
+				if (mx[im] < xmax - 2.0 && mx[im]>0.0) {
+					Fx -= mFx[im];
+					Fy -= mFy[im];
+					M += -mFy[im] * (mx[im] - x) + mFx[im] * (my[im] - y);
+				}
+			}
+		}
+	}
+}
+
 double ImmersedParticle::Interpolation(int im, LatticeMoment& lm)
 {
 	double dx, dy, dxc, dyc;
@@ -213,8 +233,13 @@ double ImmersedParticle::Interpolation(int im, LatticeMoment& lm)
 	dy = my[im] - j0;
 	dyc = 1.0 - dy;
 
-	return lm(i0, j0, 0) * dxc*dyc + \
-		lm(i1, j0, 0) * dx*dyc + \
-		lm(i0, j1, 0) * dxc*dy + \
-		lm(i1, j1, 0) * dx*dy;
+	return lm(i0, j0, 0) * dxc * dyc + \
+		lm(i1, j0, 0) * dx * dyc + \
+		lm(i0, j1, 0) * dxc * dy + \
+		lm(i1, j1, 0) * dx * dy;
+}
+
+int ImmersedParticle::GetNm()
+{
+	return nm;
 }

@@ -1,6 +1,6 @@
 #include "LatticeSolver.h"
 
-void LatticeSolver::Ignore(ifstream & fin, int l)
+void LatticeSolver::Ignore(ifstream& fin, int l)
 {
 	char buffer[101];
 	for (int i = 0; i != l; i++) {
@@ -46,11 +46,11 @@ LatticeSolver::LatticeSolver()
 
 
 	/* moment & population initialization */
-	lm.InitGeom(rank*ni, 0, ni, nj, tg);
+	lm.InitGeom(rank * ni, 0, ni, nj, tg);
 	lm.InitData();
 	lm.UpdateGhost();
 
-	lp.InitGeom(rank*ni, 0, ni, nj, tg);
+	lp.InitGeom(rank * ni, 0, ni, nj, tg);
 	lp.InitData(lm);
 	lp.InitParam(tau);
 	lp.UpdateGhost();
@@ -90,21 +90,14 @@ void LatticeSolver::Calculate()
 	double diff_rank[128] = { 0.0 };
 	for (int i = 0; i != nstep; i++) {
 
-		if (psolver.npart != 0) {
-			for (int ip = 0; ip != psolver.npart; ip++) {
-				for (int iforce = 0; iforce != psolver.nforce; iforce++) {
-					if (psolver.part[ip].IsExist()) {
-						psolver.part[ip].ForceMoment(lm);
-					}
-					lm.UpdateGhost();
-				}
-			}
-		}
+		psolver.Calculate(lm);
+		psolver.UpdateForce();
 
 		lp.CollideSrt(lm);
 		lp.UpdateGhost();
 		lp.Stream();
 		lp.Boundary();
+
 		lm.Update(lp);
 
 		step++;
@@ -125,7 +118,7 @@ void LatticeSolver::Calculate()
 		}
 
 		// write file
-		if (step%nwrite == 0) {
+		if (step % nwrite == 0) {
 			if (rank == host) {
 				cout << "write to file.\n";
 			}

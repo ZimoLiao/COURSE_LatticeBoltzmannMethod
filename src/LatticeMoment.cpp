@@ -24,8 +24,8 @@ void LatticeMoment::InitDataShear()
 			else { data[Index(i, j, 1)] = 0.0; }
 
 			if (abs(y - ymid) < (nj / 4.0 - 1.0)) {
-				data[Index(i, j, 2)] = 0.01*cos(4.0 * pi*x / (double(mpi_size)*ni)) \
-					*cos(2 * pi*(y - ymid) / double(nj));
+				data[Index(i, j, 2)] = 0.01 * cos(4.0 * pi * x / (double(mpi_size) * ni)) \
+					* cos(2 * pi * (y - ymid) / double(nj));
 			}
 			else {
 				data[Index(i, j, 2)] = 0.0;
@@ -34,7 +34,7 @@ void LatticeMoment::InitDataShear()
 	}
 }
 
-void LatticeMoment::Update(LatticePopulation & lp)
+void LatticeMoment::Update(LatticePopulation& lp)
 {
 	double u, v;
 	diff = 0.0;
@@ -48,8 +48,8 @@ void LatticeMoment::Update(LatticePopulation & lp)
 
 			CalculateMoment(&data[ind], &lp(i, j));
 
-			diff += sqrt((u - data[ind + 1])*(u - data[ind + 1]) + \
-				(v - data[ind + 2])*(v - data[ind + 2]));
+			diff += sqrt((u - data[ind + 1]) * (u - data[ind + 1]) + \
+				(v - data[ind + 2]) * (v - data[ind + 2]));
 		}
 	}
 }
@@ -80,7 +80,7 @@ void LatticeMoment::WriteAscii(int step)
 				<< ' ' << std::scientific << std::setprecision(12) << data[ind] \
 				<< ' ' << std::scientific << std::setprecision(12) << data[ind + 1] \
 				<< ' ' << std::scientific << std::setprecision(12) << data[ind + 2] \
-				<< endl;
+				<< '\n';
 		}
 	}
 
