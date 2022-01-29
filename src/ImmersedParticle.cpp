@@ -41,7 +41,7 @@ ImmersedParticle::ImmersedParticle(\
 	ymax = nj + 1.0;
 
 	/* markers initialization */
-	nm = ceil(2.0 * pi * r) + 5;
+	nm = ceil(2.0 * pi * r);
 	dphi = 2.0 * pi / double(nm);
 
 	// allocation
@@ -206,13 +206,14 @@ void ImmersedParticle::CalculateTotalForce()
 	Fy = 0.0;
 	M = 0.0;
 
+	double ds = r * dphi;
 	if (IsExist()) {
 		for (int im = 0; im != nm; im++) {
 			if (mexist[im]) {
 				if (mx[im] < xmax - 2.0 && mx[im]>0.0) {
-					Fx -= mFx[im];
-					Fy -= mFy[im];
-					M += -mFy[im] * (mx[im] - x) + mFx[im] * (my[im] - y);
+					Fx -= mFx[im] * ds;
+					Fy -= mFy[im] * ds;
+					M += -mFy[im] * (mx[im] - x) + mFx[im] * (my[im] - y) * ds;
 				}
 			}
 		}

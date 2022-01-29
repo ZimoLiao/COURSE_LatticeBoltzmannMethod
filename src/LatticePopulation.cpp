@@ -1,7 +1,7 @@
 #include "LatticePopulation.h"
 
 
-void LatticePopulation::InitData(LatticeMoment & lm)
+void LatticePopulation::InitData(LatticeMoment& lm)
 {
 	FlushData();
 	for (int i = 0; i != ni; i++) {
@@ -9,9 +9,16 @@ void LatticePopulation::InitData(LatticeMoment & lm)
 			CalculateEquilibrium(&data[Index(i, j)], &lm(i, j));
 		}
 	}
+
+	// TODO velocity profile of inlet
+	double Re = 100.0, D = 80.0, ubar, H = nj - 1.0, tau = 0.8;
+	ubar = Re * (tau - 0.5) / 3.0 / D;
+	for (int j = 0; j != nj; j++) {
+		uin[j] = 6.0 * ubar * double(j) * (H - j) / H / H;
+	}
 }
 
-void LatticePopulation::InitBoundary(LatticeBound & newlb)
+void LatticePopulation::InitBoundary(LatticeBound& newlb)
 {
 	if (newlb.IsExist()) {
 		lb.push_back(newlb);
@@ -112,9 +119,10 @@ void LatticePopulation::Boundary()
 			}
 			break;
 		case 2: // NEBB-V
+			// TODO 偷懒直接写入口速度剖面了
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
-					lb[b].CalculateNebbV(&data[Index(i, j)]);
+					lb[b].CalculateNebbV(&data[Index(i, j)], uin[j], 0.0);
 				}
 			}
 			break;
@@ -129,7 +137,7 @@ void LatticePopulation::Boundary()
 	}
 }
 
-void LatticePopulation::CollideSrt(LatticeMoment & lm)
+void LatticePopulation::CollideSrt(LatticeMoment& lm)
 {
 	for (int i = 0; i != size; i++) {
 		data[i] *= omegac;

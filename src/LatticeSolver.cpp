@@ -78,6 +78,8 @@ LatticeSolver::LatticeSolver()
 	fin.close();
 
 	psolver.Init(rank, ni, nj);
+
+	lm.WriteAscii(step);
 }
 
 void LatticeSolver::Calculate()

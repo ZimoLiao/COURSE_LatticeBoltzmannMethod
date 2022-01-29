@@ -22,7 +22,7 @@ int main()
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 
 	LatticeSolver ls;
-
+	
 	ls.Calculate();
 
 	MPI_Finalize();

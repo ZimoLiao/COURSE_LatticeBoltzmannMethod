@@ -63,24 +63,25 @@ void ParticleSolver::Init(int rank, int ni, int nj)
 void ParticleSolver::Calculate(LatticeMoment& lm)
 {
 	for (int ip = 0; ip != npart; ip++) {
+		Force[3 * ip] = 0.0;
+		Force[3 * ip + 1] = 0.0;
+		Force[3 * ip + 2] = 0.0;
 		for (int iforce = 0; iforce != nforce; iforce++) {
 			if (part[ip].IsExist()) {
 				part[ip].ForceMoment(lm);
 			}
 			lm.UpdateGhost();
+			part[ip].CalculateTotalForce();
+			Force[3 * ip] += part[ip].Fx;
+			Force[3 * ip + 1] += part[ip].Fy;
+			Force[3 * ip + 2] += part[ip].M;
 		}
-		part[ip].CalculateTotalForce();
 	}
 }
 
 void ParticleSolver::UpdateForce()
 {
 	step++;
-	for (int i = 0; i != npart; i++) {
-		Force[3 * i] = part[i].Fx;
-		Force[3 * i + 1] = part[i].Fy;
-		Force[3 * i + 2] = part[i].M;
-	}
 	MPI_Gather(Force, npart * 3, MPI_DOUBLE, buffer_host, npart * 3, MPI_DOUBLE, host, MPI_COMM_WORLD);
 	if (rank == host) {
 		fout << step << ' ';

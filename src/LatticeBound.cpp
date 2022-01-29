@@ -178,6 +178,41 @@ void LatticeBound::CalculateNebbV(double * f)
 	}
 }
 
+void LatticeBound::CalculateNebbV(double* f, double u, double v) // NEBB-v with given velocity
+{
+	switch (direct)
+	{
+	case 1:
+		rho = (f[0] + f[2] + f[4] + 2.0 * (f[3] + f[6] + f[7])) / (1.0 - u);
+
+		f[1] = f[3] + 2.0 * rho * u / 3.0;
+		f[5] = f[7] - 0.5 * (f[2] - f[4]) + 0.5 * rho * v + rho * u / 6.0;
+		f[8] = f[6] + 0.5 * (f[2] - f[4]) - 0.5 * rho * v + rho * u / 6.0;
+		break;
+	case 3:
+		rho = (f[0] + f[2] + f[4] + 2.0 * (f[1] + f[5] + f[8])) / (1.0 - u);
+
+		f[3] = f[1] - 2.0 * rho * u / 3.0;
+		f[6] = f[8] - 0.5 * (f[2] - f[4]) + 0.5 * rho * v - rho * u / 6.0;
+		f[7] = f[5] + 0.5 * (f[2] - f[4]) - 0.5 * rho * v - rho * u / 6.0;
+		break;
+	case 2:
+		rho = (f[0] + f[1] + f[3] + 2.0 * (f[4] + f[7] + f[8])) / (1.0 - v);
+
+		f[2] = f[4] + 2.0 * rho * v / 3.0;
+		f[5] = f[7] - 0.5 * (f[1] - f[3]) + 0.5 * rho * u + rho * v / 6.0;
+		f[6] = f[8] + 0.5 * (f[1] - f[3]) - 0.5 * rho * u + rho * v / 6.0;
+		break;
+	case 4:
+		rho = (f[0] + f[1] + f[3] + 2.0 * (f[2] + f[5] + f[6])) / (1.0 - v);
+
+		f[4] = f[2] - 2.0 * rho * v / 3.0;
+		f[8] = f[6] - 0.5 * (f[1] - f[3]) + 0.5 * rho * u - rho * v / 6.0;
+		f[7] = f[5] + 0.5 * (f[1] - f[3]) - 0.5 * rho * u - rho * v / 6.0;
+		break;
+	}
+}
+
 void LatticeBound::CalculateNebbP(double * f)
 {
 	double jx, jy;

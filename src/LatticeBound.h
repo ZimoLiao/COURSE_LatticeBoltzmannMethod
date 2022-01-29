@@ -33,7 +33,10 @@ public:
 
 	void CalculateNebb0(double* f);
 	void CalculateNebb0(double* f, double rho_ref);
+
 	void CalculateNebbV(double* f);
+	void CalculateNebbV(double* f, double u, double v);
+
 	void CalculateNebbP(double* f);
 
 	int GetType();

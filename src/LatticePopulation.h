@@ -19,6 +19,9 @@ class LatticePopulation :
 	vector<LatticeBound> lb;
 
 
+	/* TODO velocity profiel */
+	double uin[1024];
+
 public:
 	friend class LatticeMoment;
 
