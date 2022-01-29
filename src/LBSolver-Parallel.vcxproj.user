@@ -9,7 +9,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerCommand>$(I_MPI_ONEAPI_ROOT)\bin\mpiexec.exe</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>-n 2 "$(TargetPath)"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-n 1 "$(TargetPath)"</LocalDebuggerCommandArguments>
     <LocalDebuggerEnvironment>PATH=$(I_MPI_ONEAPI_ROOT)\bin\release;$(I_MPI_ONEAPI_ROOT)\libfabric\bin;$(PATH)</LocalDebuggerEnvironment>
   </PropertyGroup>
 </Project>

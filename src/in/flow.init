@@ -2,7 +2,7 @@
 
 ## Simulation
     nstep   nwrite
-    10000   500
+    20000   2000
 
 ## Geometry parameters
 ### grid size
@@ -10,7 +10,7 @@
     882     165
 ### partition (x-direction only)
     di      dj
-    2       1
+    1       1
 ### boundary type (-n:nth-order extrapolation; 0:do nothing; 1:connection)
     b1      b2      b3      b4
     0       0       0       0 
