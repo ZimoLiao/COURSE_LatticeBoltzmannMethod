@@ -10,7 +10,7 @@ using std::min;
 class LatticeBound
 {
 	/* parameters */
-	int type; // 1:NEBB-0; 2:NEBB-V; 3:NEBB-P;
+	int type; // 1:NEBB-0; 2:NEBB-V; 3:NEBB-P; 4-Extrapolation; 5-ABB (anti-bounce-back)
 	int direct;
 	double rho, u, v;
 
@@ -36,8 +36,11 @@ public:
 
 	void CalculateNebbV(double* f);
 	void CalculateNebbV(double* f, double u, double v);
+	void CalculateNebbV(double* f, double rho_ref, double u, double v);// TODO ´ýÉ¾È¥
 
 	void CalculateNebbP(double* f);
+
+	void CalculateAbbV(double* f, double u, double v);
 
 	int GetType();
 	int GetIs();

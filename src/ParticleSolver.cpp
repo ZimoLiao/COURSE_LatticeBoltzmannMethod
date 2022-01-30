@@ -75,6 +75,10 @@ void ParticleSolver::Calculate(LatticeMoment& lm)
 			Force[3 * ip] += part[ip].Fx;
 			Force[3 * ip + 1] += part[ip].Fy;
 			Force[3 * ip + 2] += part[ip].M;
+
+			//if (rank == 0) {
+			//	cout << part[ip].Fx << '\t' << part[ip].Fy << '\t' << part[ip].M << "\tforce " << iforce << '\t' << rank << endl;
+			//}
 		}
 	}
 }

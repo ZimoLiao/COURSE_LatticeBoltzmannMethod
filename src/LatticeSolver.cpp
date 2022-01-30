@@ -116,7 +116,9 @@ void LatticeSolver::Calculate()
 		MPI_Barrier(MPI_COMM_WORLD);
 
 		if (rank == host) {
-			cout << "step " << setw(8) << step << "\t diff " << diff << endl;
+			if (step % 100 == 0) {
+				cout << "step " << setw(8) << step << "\t diff " << diff << endl;
+			}
 		}
 
 		// write file

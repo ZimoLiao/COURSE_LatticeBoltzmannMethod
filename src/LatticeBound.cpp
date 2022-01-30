@@ -6,7 +6,7 @@ LatticeBound::LatticeBound(int rank, int ni, int nj, \
 	double rho, double u, double v)
 {
 	imin = rank * ni;
-	imax = (rank + 1)*ni - 1;
+	imax = (rank + 1) * ni - 1;
 	jmin = 0;
 	jmax = nj;
 
@@ -33,152 +33,117 @@ bool LatticeBound::IsExist()
 	return exist;
 }
 
-void LatticeBound::CalculateNebb0(double * f)
+void LatticeBound::CalculateNebb0(double* f)
 {
 	switch (direct)
 	{
 	case 1:
 		f[1] = f[3];
-		f[5] = f[7] - 0.5*(f[2] - f[4]);
-		f[8] = f[6] + 0.5*(f[2] - f[4]);
+		f[5] = f[7] - 0.5 * (f[2] - f[4]);
+		f[8] = f[6] + 0.5 * (f[2] - f[4]);
 		break;
 	case 3:
 		f[3] = f[1];
-		f[6] = f[8] - 0.5*(f[2] - f[4]);
-		f[7] = f[5] + 0.5*(f[2] - f[4]);
+		f[6] = f[8] - 0.5 * (f[2] - f[4]);
+		f[7] = f[5] + 0.5 * (f[2] - f[4]);
 		break;
 	case 2:
 		f[2] = f[4];
-		f[5] = f[7] - 0.5*(f[1] - f[3]);
-		f[6] = f[8] + 0.5*(f[1] - f[3]);
+		f[5] = f[7] - 0.5 * (f[1] - f[3]);
+		f[6] = f[8] + 0.5 * (f[1] - f[3]);
 		break;
 	case 4:
 		f[4] = f[2];
-		f[8] = f[6] - 0.5*(f[1] - f[3]);
-		f[7] = f[5] + 0.5*(f[1] - f[3]);
+		f[8] = f[6] - 0.5 * (f[1] - f[3]);
+		f[7] = f[5] + 0.5 * (f[1] - f[3]);
 		break;
 	case 5:
 		f[1] = f[3];
 		f[2] = f[4];
 		f[5] = f[7];
-		f[6] = 0.5*(rho - f[0] - 2.0*(f[3] + f[4] + f[7]));
+		f[6] = 0.5 * (rho - f[0] - 2.0 * (f[3] + f[4] + f[7]));
 		f[8] = f[6];
 		break;
 	case 6:
 		f[3] = f[1];
 		f[2] = f[4];
 		f[6] = f[8];
-		f[5] = 0.5*(rho - f[0] - 2.0*(f[1] + f[4] + f[8]));
+		f[5] = 0.5 * (rho - f[0] - 2.0 * (f[1] + f[4] + f[8]));
 		f[7] = f[5];
 		break;
 	case 7:
 		f[3] = f[1];
 		f[4] = f[2];
 		f[7] = f[5];
-		f[6] = 0.5*(rho - f[0] - 2.0*(f[1] + f[2] + f[5]));
+		f[6] = 0.5 * (rho - f[0] - 2.0 * (f[1] + f[2] + f[5]));
 		f[8] = f[6];
 		break;
 	case 8:
 		f[1] = f[3];
 		f[4] = f[2];
 		f[8] = f[6];
-		f[5] = 0.5*(rho - f[0] - 2.0*(f[2] + f[3] + f[6]));
+		f[5] = 0.5 * (rho - f[0] - 2.0 * (f[2] + f[3] + f[6]));
 		f[7] = f[5];
 		break;
 	}
 }
 
-void LatticeBound::CalculateNebb0(double * f, double rho_ref)
+void LatticeBound::CalculateNebb0(double* f, double rho_ref)
 {
 	switch (direct)
 	{
 	case 1:
 		f[1] = f[3];
-		f[5] = f[7] - 0.5*(f[2] - f[4]);
-		f[8] = f[6] + 0.5*(f[2] - f[4]);
+		f[5] = f[7] - 0.5 * (f[2] - f[4]);
+		f[8] = f[6] + 0.5 * (f[2] - f[4]);
 		break;
 	case 3:
 		f[3] = f[1];
-		f[6] = f[8] - 0.5*(f[2] - f[4]);
-		f[7] = f[5] + 0.5*(f[2] - f[4]);
+		f[6] = f[8] - 0.5 * (f[2] - f[4]);
+		f[7] = f[5] + 0.5 * (f[2] - f[4]);
 		break;
 	case 2:
 		f[2] = f[4];
-		f[5] = f[7] - 0.5*(f[1] - f[3]);
-		f[6] = f[8] + 0.5*(f[1] - f[3]);
+		f[5] = f[7] - 0.5 * (f[1] - f[3]);
+		f[6] = f[8] + 0.5 * (f[1] - f[3]);
 		break;
 	case 4:
 		f[4] = f[2];
-		f[8] = f[6] - 0.5*(f[1] - f[3]);
-		f[7] = f[5] + 0.5*(f[1] - f[3]);
+		f[8] = f[6] - 0.5 * (f[1] - f[3]);
+		f[7] = f[5] + 0.5 * (f[1] - f[3]);
 		break;
 	case 5:
 		f[1] = f[3];
 		f[2] = f[4];
 		f[5] = f[7];
-		f[6] = 0.5*(rho_ref - f[0] - 2.0*(f[3] + f[4] + f[7]));
+		f[6] = 0.5 * (rho_ref - f[0] - 2.0 * (f[3] + f[4] + f[7]));
 		f[8] = f[6];
 		break;
 	case 6:
 		f[3] = f[1];
 		f[2] = f[4];
 		f[6] = f[8];
-		f[5] = 0.5*(rho_ref - f[0] - 2.0*(f[1] + f[4] + f[8]));
+		f[5] = 0.5 * (rho_ref - f[0] - 2.0 * (f[1] + f[4] + f[8]));
 		f[7] = f[5];
 		break;
 	case 7:
 		f[3] = f[1];
 		f[4] = f[2];
 		f[7] = f[5];
-		f[6] = 0.5*(rho_ref - f[0] - 2.0*(f[1] + f[2] + f[5]));
+		f[6] = 0.5 * (rho_ref - f[0] - 2.0 * (f[1] + f[2] + f[5]));
 		f[8] = f[6];
 		break;
 	case 8:
 		f[1] = f[3];
 		f[4] = f[2];
 		f[8] = f[6];
-		f[5] = 0.5*(rho_ref - f[0] - 2.0*(f[2] + f[3] + f[6]));
+		f[5] = 0.5 * (rho_ref - f[0] - 2.0 * (f[2] + f[3] + f[6]));
 		f[7] = f[5];
 		break;
 	}
 }
 
-void LatticeBound::CalculateNebbV(double * f)
-{
-	switch (direct)
-	{
-	case 1:
-		rho = (f[0] + f[2] + f[4] + 2.0*(f[3] + f[6] + f[7])) / (1.0 - u);
-
-		f[1] = f[3] + 2.0*rho*u / 3.0;
-		f[5] = f[7] - 0.5*(f[2] - f[4]) + 0.5*rho*v + rho * u / 6.0;
-		f[8] = f[6] + 0.5*(f[2] - f[4]) - 0.5*rho*v + rho * u / 6.0;
-		break;
-	case 3:
-		rho = (f[0] + f[2] + f[4] + 2.0*(f[1] + f[5] + f[8])) / (1.0 - u);
-
-		f[3] = f[1] - 2.0*rho*u / 3.0;
-		f[6] = f[8] - 0.5*(f[2] - f[4]) + 0.5*rho*v - rho * u / 6.0;
-		f[7] = f[5] + 0.5*(f[2] - f[4]) - 0.5*rho*v - rho * u / 6.0;
-		break;
-	case 2:
-		rho = (f[0] + f[1] + f[3] + 2.0*(f[4] + f[7] + f[8])) / (1.0 - v);
-
-		f[2] = f[4] + 2.0*rho*v / 3.0;
-		f[5] = f[7] - 0.5*(f[1] - f[3]) + 0.5*rho*u + rho * v / 6.0;
-		f[6] = f[8] + 0.5*(f[1] - f[3]) - 0.5*rho*u + rho * v / 6.0;
-		break;
-	case 4:
-		rho = (f[0] + f[1] + f[3] + 2.0*(f[2] + f[5] + f[6])) / (1.0 - v);
-
-		f[4] = f[2] - 2.0*rho*v / 3.0;
-		f[8] = f[6] - 0.5*(f[1] - f[3]) + 0.5*rho*u - rho * v / 6.0;
-		f[7] = f[5] + 0.5*(f[1] - f[3]) - 0.5*rho*u - rho * v / 6.0;
-		break;
-	}
-}
-
-void LatticeBound::CalculateNebbV(double* f, double u, double v) // NEBB-v with given velocity
+void LatticeBound::CalculateNebbV(double* f)
 {
 	switch (direct)
 	{
@@ -213,38 +178,152 @@ void LatticeBound::CalculateNebbV(double* f, double u, double v) // NEBB-v with 
 	}
 }
 
-void LatticeBound::CalculateNebbP(double * f)
+void LatticeBound::CalculateNebbV(double* f, double u, double v) // NEBB-v with given velocity
+{
+	switch (direct)
+	{
+	case 1:
+		rho = (f[0] + f[2] + f[4] + 2.0 * (f[3] + f[6] + f[7])) / (1.0 - u);
+		f[1] = f[3] + 2.0 * rho * u / 3.0;
+		f[5] = f[7] - 0.5 * (f[2] - f[4]) + 0.5 * rho * v + rho * u / 6.0;
+		f[8] = f[6] + 0.5 * (f[2] - f[4]) - 0.5 * rho * v + rho * u / 6.0;
+		break;
+	case 3:
+		rho = (f[0] + f[2] + f[4] + 2.0 * (f[1] + f[5] + f[8])) / (1.0 - u);
+
+		f[3] = f[1] - 2.0 * rho * u / 3.0;
+		f[6] = f[8] - 0.5 * (f[2] - f[4]) + 0.5 * rho * v - rho * u / 6.0;
+		f[7] = f[5] + 0.5 * (f[2] - f[4]) - 0.5 * rho * v - rho * u / 6.0;
+		break;
+	case 2:
+		rho = (f[0] + f[1] + f[3] + 2.0 * (f[4] + f[7] + f[8])) / (1.0 - v);
+
+		f[2] = f[4] + 2.0 * rho * v / 3.0;
+		f[5] = f[7] - 0.5 * (f[1] - f[3]) + 0.5 * rho * u + rho * v / 6.0;
+		f[6] = f[8] + 0.5 * (f[1] - f[3]) - 0.5 * rho * u + rho * v / 6.0;
+		break;
+	case 4:
+		rho = (f[0] + f[1] + f[3] + 2.0 * (f[2] + f[5] + f[6])) / (1.0 - v);
+
+		f[4] = f[2] - 2.0 * rho * v / 3.0;
+		f[8] = f[6] - 0.5 * (f[1] - f[3]) + 0.5 * rho * u - rho * v / 6.0;
+		f[7] = f[5] + 0.5 * (f[1] - f[3]) - 0.5 * rho * u - rho * v / 6.0;
+		break;
+	}
+}
+
+void LatticeBound::CalculateNebbV(double* f, double rho_ref, double u, double v)
+{
+	switch (direct)
+	{
+	case 1:
+		rho = (f[0] + f[2] + f[4] + 2.0 * (f[3] + f[6] + f[7])) / (1.0 - u);
+
+		f[1] = f[3] + 2.0 * rho * u / 3.0;
+		f[5] = f[7] - 0.5 * (f[2] - f[4]) + 0.5 * rho * v + rho * u / 6.0;
+		f[8] = f[6] + 0.5 * (f[2] - f[4]) - 0.5 * rho * v + rho * u / 6.0;
+		break;
+	case 3:
+		rho = (f[0] + f[2] + f[4] + 2.0 * (f[1] + f[5] + f[8])) / (1.0 - u);
+
+		f[3] = f[1] - 2.0 * rho * u / 3.0;
+		f[6] = f[8] - 0.5 * (f[2] - f[4]) + 0.5 * rho * v - rho * u / 6.0;
+		f[7] = f[5] + 0.5 * (f[2] - f[4]) - 0.5 * rho * v - rho * u / 6.0;
+		break;
+	case 2:
+		rho = (f[0] + f[1] + f[3] + 2.0 * (f[4] + f[7] + f[8])) / (1.0 - v);
+
+		f[2] = f[4] + 2.0 * rho * v / 3.0;
+		f[5] = f[7] - 0.5 * (f[1] - f[3]) + 0.5 * rho * u + rho * v / 6.0;
+		f[6] = f[8] + 0.5 * (f[1] - f[3]) - 0.5 * rho * u + rho * v / 6.0;
+		break;
+	case 4:
+		rho = (f[0] + f[1] + f[3] + 2.0 * (f[2] + f[5] + f[6])) / (1.0 - v);
+
+		f[4] = f[2] - 2.0 * rho * v / 3.0;
+		f[8] = f[6] - 0.5 * (f[1] - f[3]) + 0.5 * rho * u - rho * v / 6.0;
+		f[7] = f[5] + 0.5 * (f[1] - f[3]) - 0.5 * rho * u - rho * v / 6.0;
+		break;
+	}
+	for (int a = 0; a != 9; a++) {
+		f[a] *= rho_ref / rho; // TODO 行不通 得删去
+	}
+}
+
+void LatticeBound::CalculateNebbP(double* f)
 {
 	double jx, jy;
 	switch (direct)
 	{
 	case 1:
-		jx = rho - (f[0] + f[2] + f[4] + 2.0*(f[3] + f[6] + f[7]));
+		jx = rho - (f[0] + f[2] + f[4] + 2.0 * (f[3] + f[6] + f[7]));
 
-		f[1] = f[3] + 2.0*jx / 3.0;
-		f[5] = f[7] - 0.5*(f[2] - f[4]) + jx / 6.0;
-		f[8] = f[6] + 0.5*(f[2] - f[4]) + jx / 6.0;
+		f[1] = f[3] + 2.0 * jx / 3.0;
+		f[5] = f[7] - 0.5 * (f[2] - f[4]) + jx / 6.0;
+		f[8] = f[6] + 0.5 * (f[2] - f[4]) + jx / 6.0;
 		break;
 	case 3:
-		jx = (f[0] + f[2] + f[4] + 2.0*(f[1] + f[5] + f[8])) - rho;
+		jx = (f[0] + f[2] + f[4] + 2.0 * (f[1] + f[5] + f[8])) - rho;
 
-		f[3] = f[1] - 2.0*jx / 3.0;
-		f[6] = f[8] - 0.5*(f[2] - f[4]) - jx / 6.0;
-		f[7] = f[5] + 0.5*(f[2] - f[4]) - jx / 6.0;
+		f[3] = f[1] - 2.0 * jx / 3.0;
+		f[6] = f[8] - 0.5 * (f[2] - f[4]) - jx / 6.0;
+		f[7] = f[5] + 0.5 * (f[2] - f[4]) - jx / 6.0;
 		break;
 	case 2:
-		jy = rho - (f[0] + f[1] + f[3] + 2.0*(f[4] + f[7] + f[8]));
+		jy = rho - (f[0] + f[1] + f[3] + 2.0 * (f[4] + f[7] + f[8]));
 
-		f[2] = f[4] + 2.0*jy / 3.0;
-		f[5] = f[7] - 0.5*(f[1] - f[3]) + jy / 6.0;
-		f[6] = f[8] + 0.5*(f[1] - f[3]) + jy / 6.0;
+		f[2] = f[4] + 2.0 * jy / 3.0;
+		f[5] = f[7] - 0.5 * (f[1] - f[3]) + jy / 6.0;
+		f[6] = f[8] + 0.5 * (f[1] - f[3]) + jy / 6.0;
 		break;
 	case 4:
-		jy = (f[0] + f[1] + f[3] + 2.0*(f[2] + f[5] + f[6])) - rho;
+		jy = (f[0] + f[1] + f[3] + 2.0 * (f[2] + f[5] + f[6])) - rho;
 
-		f[4] = f[2] - 2.0*jy / 3.0;
-		f[8] = f[6] - 0.5*(f[1] - f[3]) - jy / 6.0;
-		f[7] = f[5] + 0.5*(f[1] - f[3]) - jy / 6.0;
+		f[4] = f[2] - 2.0 * jy / 3.0;
+		f[8] = f[6] - 0.5 * (f[1] - f[3]) - jy / 6.0;
+		f[7] = f[5] + 0.5 * (f[1] - f[3]) - jy / 6.0;
+		break;
+	}
+}
+
+void LatticeBound::CalculateAbbV(double* f, double u, double v) // anti-bounce-back method
+{
+	double rhoin, fn[9];
+	switch (direct)
+	{
+	case 1: // only u (x-direction) // ABB还不能让ghost layer上的无用信息streaming过来。。。
+		/*
+		fn[0] = f[0];
+		fn[1] = f[3] + 2.0 * u / 3.0;
+		fn[2] = f[4];
+		fn[3] = f[1] - 2.0 * u / 3.0;
+		fn[4] = f[2];
+		fn[5] = f[7] + u / 6.0;
+		fn[6] = f[8] - u / 6.0;
+		fn[7] = f[5] - u / 6.0;
+		fn[8] = f[6] + u / 6.0;
+		for (int a = 0; a != 9; a++) {
+			f[a] = fn[a];
+		}*/
+
+		f[1] = f[3] + 2.0 * u / 3.0;
+		f[5] = f[7] + 0.5 * v + u / 6.0;
+		f[8] = f[6] - 0.5 * v + u / 6.0;
+		break;
+	case 3:
+		f[3] = f[1] - 2.0 * u / 3.0;
+		f[6] = f[8] + 0.5 * v - u / 6.0;
+		f[7] = f[5] - 0.5 * v - u / 6.0;
+		break;
+	case 2:
+		f[2] = f[4] + 2.0 * v / 3.0;
+		f[5] = f[7] + 0.5 * u + v / 6.0;
+		f[6] = f[8] - 0.5 * u + v / 6.0;
+		break;
+	case 4:
+		f[4] = f[2] - 2.0 * v / 3.0;
+		f[8] = f[6] + 0.5 * u - v / 6.0;
+		f[7] = f[5] - 0.5 * u - v / 6.0;
 		break;
 	}
 }

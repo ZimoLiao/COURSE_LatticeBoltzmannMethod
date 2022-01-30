@@ -11,7 +11,7 @@ void LatticePopulation::InitData(LatticeMoment& lm)
 	}
 
 	// TODO velocity profile of inlet
-	double Re = 100.0, D = 80.0, ubar, H = nj - 1.0, tau = 0.8;
+	double Re = 100.0, D = 40.0, ubar, H = nj - 1.0, tau = 0.6;
 	ubar = Re * (tau - 0.5) / 3.0 / D;
 	for (int j = 0; j != nj; j++) {
 		uin[j] = 6.0 * ubar * double(j) * (H - j) / H / H;
@@ -28,7 +28,7 @@ void LatticePopulation::InitBoundary(LatticeBound& newlb)
 
 void LatticePopulation::Stream()
 {
-	// 1 direction
+	// 1 direction 
 	for (int i = ni; i > 0; i--) {
 		for (int j = nj; j > 0; j--) {
 			data[9 * (sizej * i + j) + 1] = data[9 * (sizej * (i - 1) + j) + 1];
@@ -104,6 +104,7 @@ void LatticePopulation::Boundary()
 							for (int a = 0; a != 9; a++) {
 								rho_ref += data[ind + a];
 							}
+							//if (i == 0) { rho_ref = 1.0; } // 设置入口参考密度为1.0
 							lb[b].CalculateNebb0(&data[Index(i, j)], rho_ref);
 						}
 						else if (j == nj - 1) {
@@ -112,6 +113,7 @@ void LatticePopulation::Boundary()
 							for (int a = 0; a != 9; a++) {
 								rho_ref += data[ind + a];
 							}
+							//if (i == 0) { rho_ref = 1.0; } // 设置入口参考密度为1.0
 							lb[b].CalculateNebb0(&data[Index(i, j)], rho_ref);
 						}
 					}
@@ -120,9 +122,15 @@ void LatticePopulation::Boundary()
 			break;
 		case 2: // NEBB-V
 			// TODO 偷懒直接写入口速度剖面了
+			// TODO 这里将velocity profile中心处密度固定为参考密度【NO 该方法不行】
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
+					//if (j == nj / 2 || j == nj / 2 - 1) {
+					//	lb[b].CalculateNebbV(&data[Index(i, j)], 1.0, uin[j], 0.0);
+					//}
+					//else {
 					lb[b].CalculateNebbV(&data[Index(i, j)], uin[j], 0.0);
+					//}
 				}
 			}
 			break;
@@ -130,6 +138,27 @@ void LatticePopulation::Boundary()
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
 					lb[b].CalculateNebbP(&data[Index(i, j)]);
+				}
+			}
+			break;
+		case 4: // extrapolation (TODO 修改)
+			int indin, indout;
+			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
+				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
+					indin = Index(i - 1, j);
+					indout = Index(i, j);
+					for (int a = 0; a != 9; a++) {
+						data[indout + a] = data[indin + a];
+					}
+				}
+			}
+			break;
+
+		case 5:
+			// TODO 偷懒直接写入口速度剖面了
+			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
+				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
+					lb[b].CalculateAbbV(&data[Index(i, j)], uin[j], 0.0);
 				}
 			}
 			break;
