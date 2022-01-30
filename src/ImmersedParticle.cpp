@@ -151,8 +151,8 @@ void ImmersedParticle::ForceMoment(LatticeMoment& lm)
 
 			istart = floor(mx[im]) - 1;
 			jstart = floor(my[im]) - 1;
-			iend = istart + 3;
-			jend = jstart + 3;
+			iend = istart + 4;
+			jend = jstart + 4;
 
 			double delta = 0.0;
 			for (int i = istart; i != iend; i++) {
@@ -166,7 +166,7 @@ void ImmersedParticle::ForceMoment(LatticeMoment& lm)
 	}
 
 	/* update force and moment */
-	//double ds = r * dphi;
+	double ds = r * dphi;
 	for (int im = 0; im != nm; im++) {
 		mFx[im] = 0.;
 		mFy[im] = 0.;
@@ -181,8 +181,9 @@ void ImmersedParticle::ForceMoment(LatticeMoment& lm)
 
 			istart = floor(mx[im]) - 1;
 			jstart = floor(my[im]) - 1;
-			iend = istart + 3;
-			jend = jstart + 3;
+			iend = istart + 4; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			jend = jstart + 4;
+
 
 			double delta = 0.0;
 			for (int i = istart; i != iend; i++) {
@@ -190,11 +191,10 @@ void ImmersedParticle::ForceMoment(LatticeMoment& lm)
 					delta = Delta(im, i, j);
 					rho = lm(i, j, 0);
 
-					lm(i, j, 1) += delta * mFx[im] / 2.0 / rho;
-					lm(i, j, 2) += delta * mFy[im] / 2.0 / rho;
+					lm(i, j, 1) += delta * mFx[im] / 2.0 / rho * ds;
+					lm(i, j, 2) += delta * mFy[im] / 2.0 / rho * ds;
 				}
 			}
-
 		}
 	}
 }
@@ -205,13 +205,14 @@ void ImmersedParticle::CalculateTotalForce()
 	Fy = 0.0;
 	M = 0.0;
 
+	double ds = r * dphi;
 	if (IsExist()) {
 		for (int im = 0; im != nm; im++) {
 			if (mexist[im]) {
 				if (mx[im] < xmax - 2.0 && mx[im]>0.0) {
-					Fx -= mFx[im];
-					Fy -= mFy[im];
-					M += -mFy[im] * (mx[im] - x) + mFx[im] * (my[im] - y);
+					Fx -= mFx[im] * ds;
+					Fy -= mFy[im] * ds;
+					M += -mFy[im] * (mx[im] - x) + mFx[im] * (my[im] - y) * ds;
 				}
 			}
 		}

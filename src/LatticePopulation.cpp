@@ -11,7 +11,7 @@ void LatticePopulation::InitData(LatticeMoment& lm)
 	}
 
 	// TODO velocity profile of inlet
-	double Re = 100.0, D = 40.0, ubar, H = nj - 1.0, tau = 0.6;
+	double Re = 100.0, D = 40.0, ubar, H = nj - 1.0;
 	ubar = Re * (tau - 0.5) / 3.0 / D;
 	for (int j = 0; j != nj; j++) {
 		uin[j] = 6.0 * ubar * double(j) * (H - j) / H / H;
@@ -122,15 +122,9 @@ void LatticePopulation::Boundary()
 			break;
 		case 2: // NEBB-V
 			// TODO 偷懒直接写入口速度剖面了
-			// TODO 这里将velocity profile中心处密度固定为参考密度【NO 该方法不行】
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
-					//if (j == nj / 2 || j == nj / 2 - 1) {
-					//	lb[b].CalculateNebbV(&data[Index(i, j)], 1.0, uin[j], 0.0);
-					//}
-					//else {
 					lb[b].CalculateNebbV(&data[Index(i, j)], uin[j], 0.0);
-					//}
 				}
 			}
 			break;

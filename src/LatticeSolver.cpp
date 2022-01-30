@@ -51,8 +51,8 @@ LatticeSolver::LatticeSolver()
 	lm.UpdateGhost();
 
 	lp.InitGeom(rank * ni, 0, ni, nj, tg);
-	lp.InitData(lm);
 	lp.InitParam(tau);
+	lp.InitData(lm);
 	lp.UpdateGhost();
 
 	/* read fluid-boundaries */
