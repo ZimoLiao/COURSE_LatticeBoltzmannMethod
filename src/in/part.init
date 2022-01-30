@@ -2,10 +2,10 @@
 
 ## Settings
     nforce
-    1
+    3
 
 ## Particels
     npart
     1
     r       x0      y0      phi0    ux0     uy0     uphi0
-    20.0    80.0    80.0    0.0     0.0     0.0     0.0
+    40.0    160.0   160.0    0.0     0.0     0.0     0.0

@@ -2,12 +2,12 @@
 
 ## Simulation
     nstep   nwrite
-    50000   1000
+    15000  1000
 
 ## Geometry parameters
 ### grid size
     nx      ny
-    1760    329
+    880     165
 ### partition (x-direction only)
     di      dj
     4       1
@@ -18,17 +18,19 @@
 ## Physics parameters
 ### collision operators
     is_srt  tau
-    1       0.58
+    1       0.6
     is_mrt  omega_e     omega_ep    omeag_q     omega_nu
     0       0.4         1.0         1.0         1.6
 
 ## Units
 ### fluid-boundaries (NEBB implementation only)
     number of boundaries
-    5
+    7
     type    direct  is      ie      js      je      rho         u           v
-    1       2       1       -1      0       0       0.0         0.0         0.0
-    1       4       1       -1      -1      -1      0.0         0.0         0.0
+    1       2       1       -2      0       0       0.0         0.0         0.0
+    1       4       1       -2      -1      -1      0.0         0.0         0.0
     2       1       0       0       1       -2      0.0         0.0         0.0
+    6       7       -1      -1      -1      -1      0.0         0.0         0.0
     6       8       0       0       -1      -1      0.0         0.0         0.0
     6       5       0       0       0       0       0.0         0.0         0.0
+    6       6       -1      -1      0       0       0.0         0.0         0.0

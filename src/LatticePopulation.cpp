@@ -11,7 +11,7 @@ void LatticePopulation::InitData(LatticeMoment& lm)
 	}
 
 	// TODO velocity profile of inlet
-	double Re = 100.0, D = 40.0, ubar, H = nj - 1.0;
+	double Re = 100.0, D = 80.0, ubar, H = nj - 1.0;
 	ubar = Re * (tau - 0.5) / 3.0 / D;
 	for (int j = 0; j != nj; j++) {
 		uin[j] = 6.0 * ubar * double(j) * (H - j) / H / H;
@@ -93,30 +93,7 @@ void LatticePopulation::Boundary()
 		case 1: // NEBB-0
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
-
 					lb[b].CalculateNebb0(&data[Index(i, j)]);
-
-					// corner: set reference density
-					if (i == 0 || i == ni - 1) {
-						if (j == 0) {
-							double rho_ref = 0.0;
-							int ind = Index(i, 1);
-							for (int a = 0; a != 9; a++) {
-								rho_ref += data[ind + a];
-							}
-							//if (i == 0) { rho_ref = 1.0; } // 设置入口参考密度为1.0
-							lb[b].CalculateNebb0(&data[Index(i, j)], rho_ref);
-						}
-						else if (j == nj - 1) {
-							double rho_ref = 0.0;
-							int ind = Index(i, nj - 2);
-							for (int a = 0; a != 9; a++) {
-								rho_ref += data[ind + a];
-							}
-							//if (i == 0) { rho_ref = 1.0; } // 设置入口参考密度为1.0
-							lb[b].CalculateNebb0(&data[Index(i, j)], rho_ref);
-						}
-					}
 				}
 			}
 			break;
@@ -147,12 +124,37 @@ void LatticePopulation::Boundary()
 				}
 			}
 			break;
-
 		case 5:
-			// TODO 偷懒直接写入口速度剖面了
 			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
 				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
 					lb[b].CalculateAbbV(&data[Index(i, j)], uin[j], 0.0);
+				}
+			}
+			break;
+		case 6: // TODO corner
+			for (int i = lb[b].GetIs(); i <= lb[b].GetIe(); i++) {
+				for (int j = lb[b].GetJs(); j <= lb[b].GetJe(); j++) {
+					// corner: set reference density
+					if (i == 0 || i == ni - 1) {
+						if (j == 0) {
+							double rho_ref = 0.0;
+							int ind = Index(i, 1);
+							for (int a = 0; a != 9; a++) {
+								rho_ref += data[ind + a];
+							}
+							//if (i == 0) { rho_ref = 1.0; } // 设置入口参考密度为1.0
+							lb[b].CalculateNebb0(&data[Index(i, j)], rho_ref);
+						}
+						else if (j == nj - 1) {
+							double rho_ref = 0.0;
+							int ind = Index(i, nj - 2);
+							for (int a = 0; a != 9; a++) {
+								rho_ref += data[ind + a];
+							}
+							//if (i == 0) { rho_ref = 1.0; } // 设置入口参考密度为1.0
+							lb[b].CalculateNebb0(&data[Index(i, j)], rho_ref);
+						}
+					}
 				}
 			}
 			break;
@@ -162,9 +164,6 @@ void LatticePopulation::Boundary()
 
 void LatticePopulation::CollideSrt(LatticeMoment& lm)
 {
-	for (int i = 0; i != size; i++) {
-		data[i] *= omegac;
-	}
 	double feq[9];
 	int ind;
 	for (int i = 0; i != ni; i++) {
@@ -172,6 +171,7 @@ void LatticePopulation::CollideSrt(LatticeMoment& lm)
 			CalculateEquilibrium(feq, &lm(i, j));
 			ind = Index(i, j);
 			for (int a = 0; a != 9; a++) {
+				data[ind + a] *= omegac;
 				data[ind + a] += feq[a] * omega;
 			}
 		}
