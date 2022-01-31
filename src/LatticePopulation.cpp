@@ -11,7 +11,7 @@ void LatticePopulation::InitData(LatticeMoment& lm)
 	}
 
 	// TODO velocity profile of inlet
-	double Re = 100.0, D = 80.0, ubar, H = nj - 1.0;
+	double Re = 20.0, D = 60.0, ubar, H = nj - 1.0;
 	ubar = Re * (tau - 0.5) / 3.0 / D;
 	for (int j = 0; j != nj; j++) {
 		uin[j] = 6.0 * ubar * double(j) * (H - j) / H / H;
